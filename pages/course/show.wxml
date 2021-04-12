@@ -1,0 +1,55 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">课程情况</view>
+</cu-custom>
+<view class="cj-header">
+  <view class="cj-text">
+    <text class="cj-header-title">课程情况</text>
+    <text class="cj-header-info">学号：{{id}}</text>
+    <text class="cj-header-info">性别：{{sex}}</text>
+    <text class="cj-header-info">姓名：{{name}}</text>
+  </view>
+    <image class="cj-bg" src="../../images/course.png"></image>
+</view>
+
+<view class="cj-info-ctn">
+  <view class="cj-grade">
+      <image class="cj-grade-logo" src="../../images/finish.png"></image>
+      <view class="cj-grade-term">
+          <view class="cj-grade-fst">
+              <text>已修课程</text>
+              <text class="grade-comment">学分：{{finishCredit}}</text>
+          </view>
+      </view>
+  </view>
+  <view class="cj-info-box">
+      <view class="cj-info" wx:for="{{listdata}}"  wx:if="{{item.finish == 1}}">
+          <text class="cj-info-name">{{item.name}}</text>
+          <text class="cj-info-socre">{{item.courseNO}}</text>
+      </view>
+  </view>
+</view>
+
+<view class="cj-info-ctn">
+  <view class="cj-grade">
+      <image class="cj-grade-logo" src="../../images/unfinish.png"></image>
+      <view class="cj-grade-term">
+          <view class="cj-grade-fst">
+              <text>未修课程</text>
+              <text class="grade-comment">学分：{{unfinishCredit}}</text>
+          </view>
+      </view>
+  </view>
+  <view class="cj-info-box">
+      <view class="cj-info" wx:for="{{listdata}}"  wx:if="{{item.finish == 0}}">
+          <text class="cj-info-name">{{item.name}}</text>
+          <text class="cj-info-socre">{{item.courseNO}}</text>
+      </view>
+  </view>
+</view>
+
+<!-- <view class="padding flex flex-direction">
+  <navigator url="/pages/course/course" hover-class="none">
+    <button type='primary' class="cu-btn block bg-blue margin-tb-sm lg">填写调查</button>
+  </navigator>
+</view> -->

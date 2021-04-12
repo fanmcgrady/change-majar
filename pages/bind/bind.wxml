@@ -1,0 +1,16 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">身份认证</view>
+</cu-custom>
+<view class="cu-form-group margin-top">
+		<view class="title" style="font-weight:bolder;">学号：</view>
+		<input bindinput="inputName" placeholder="请输入你的学号"></input>
+</view>
+<view class="cu-form-group">
+		<view class="title" style="font-weight:bolder;">密码：</view>
+		<input bindinput="inputPassword" placeholder="请输入密码" password></input>
+</view>
+<view class="padding flex flex-direction">
+  <button  class="cu-btn block bg-blue margin-tb-sm lg" bindtap="login">
+    <text class="cuIcon-check"></text> 认证</button>
+</view>

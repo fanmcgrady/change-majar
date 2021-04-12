@@ -1,0 +1,9 @@
+<!--pages/statistic_chart/down/down.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">图片</view>
+</cu-custom>
+文件下载地址表下载中，如果下载失败，请点击复制url用浏览器打开。
+
+<button class="cu-btn block line-orange lg" bindtap="copyFileUrl">
+    <text class="cuIcon-upload"></text> 复制下载链接</button>

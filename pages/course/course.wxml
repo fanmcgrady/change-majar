@@ -1,0 +1,53 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">课程修读信息</view>
+</cu-custom>
+  <view class="bg-white solids-bottom padding-xs flex align-center">
+    <view class="flex-sub text-center">
+      <view class="solid-bottom text-xl padding">
+        <text class="text-bold text-blue text-shadow">大一必修课程修读情况</text>
+      </view>
+      <view class="cuIcon-favor text-red padding " >：一年级已修必修课程未达要求学分70%的学生必须降级</view>
+    </view>
+  </view>
+
+ 
+<!-- 显示所有的课程数据库信息 -->
+<form bindsubmit='courseFrom'>
+<view class="div">
+<view  wx:for="{{list}}" wx:key="id">
+  <view class="solids-bottom padding-xs flex align-center">
+    <view class="flex-sub ">
+        <view class="solid-bottom text-lg padding text-center">
+          <text class="text-black">课程名：</text>
+          <text class="text-black">{{item.name}}</text>
+        </view>
+        <view class="padding">序号：{{item.lessonNO}}</view>
+        <view class="padding">课程号：{{item.courseNO}}</view>
+        <view class="padding">学分：{{item.credits}}</view>
+        <view class="padding">开课单位：{{item.college}}</view>
+        <view class="padding">开课学年学期：{{item.seminar}}</view>
+    </view>
+  </view>
+    <radio-group class="block">
+		<view class="cu-form-group">
+			<view class="title">是否已修读该课程</view>
+        <view class="title">是
+          <radio catchtap="yesClick" class="green margin-left-sm" data-lessonno="{{item.lessonNO}}"></radio>
+        </view>
+        <view class="title">否
+          <radio catchtap="noClick" class="red radio" data-lessonno="{{item.lessonNO}}"></radio>
+        </view>
+		</view>
+</radio-group>
+</view>
+</view>
+<!-- 显示所有的课程数据库信息 -->
+
+	<view class="padding flex flex-direction">
+  <button formType="submit" type='primary' class="cu-btn block bg-blue margin-tb-sm lg">提交</button>
+  </view>
+</form>  
+
+
+

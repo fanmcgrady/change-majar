@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/login_stu_or_teacher/login_stu_or_teacher",
+    "pages/index/indext",
+    "pages/index/indexs",
+    "pages/student_info/student_info",
+    "pages/mine/mine",
+    "pages/student_info/show",
+    "pages/uploadImg/uploadImg",
+    "pages/uploadImg/evidence",
+    "pages/course/course",
+    "pages/course/show",
+    "pages/statistic_chart/chart1/chart1",
+    "pages/statistic_chart/chart2/chart2",
+    "pages/statistic_chart/chart3/chart3",
+    "pages/statistic_chart/chart4/chart4",
+    "pages/statistic_chart/chart5/chart5",
+    "pages/statistic_chart/down/down",
+    "pages/statistic_chart/downpic/downpic",
+    "pages/teacher_login/teacher_login",
+    "pages/uploadImg/uploadPDF",
+    "pages/informs/inform1",
+    "pages/bind/bind",
+    "pages/auth/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "ColorUI",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "plugins": {
+    "echarts": {
+      "version": "1.0.5",
+      "provider": "wx1db9e5ab1149ea03"
+    }
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/indexs",
+        "selectedIconPath": "images/homeClick.png",
+        "iconPath": "images/home.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "selectedIconPath": "images/mineClick.png",
+        "iconPath": "images/mine.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,22 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+	<view slot="backText">返回</view>
+  <view slot="content">成绩单</view>
+</cu-custom>
+<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			可信电子成绩单（必填）
+		</view>
+	</view>
+	<view class="cu-form-group">
+		<view class="grid col-4 grid-square flex-sub">
+			<view class="solids" bindtap="addFile" wx:if="{{filename.length<1}}">
+				<text class="cuIcon-add"></text>
+			</view>
+			<view>{{filename}}</view>
+		</view>
+	</view>
+<view>
+	<navigator url="/pages/index/indexs" hover-class="none">
+		<button bindtap="uploadFile" class="cu-btn block bg-blue margin-tb-sm lg">上传文件</button>
+  </navigator>
+</view>

@@ -1,0 +1,53 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">学生信息</view>
+</cu-custom>
+        <view class="ks-header">
+            <view class="ks-text">
+                <text class="ks-header-title">学生信息</text>
+                <text class="ks-header-info" >姓名：{{listdata.name}}</text>
+                <text class="ks-header-info">性别：{{listdata.sex}}</text>
+                <text class="ks-header-info">学号：{{listdata.ID}}</text>
+            </view>
+            <image class="ks-bg" src="../../images/student.png"></image>
+        </view>
+
+        <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+                <view class="ks-class-item">             
+                    <view class="ks-detail">
+                        <view class="ks-detail-item">
+                            <text class="ks-detail-label">学院</text>
+                            <text class="ks-detail-content">{{listdata.college}}</text>
+                        </view>
+                        <view class="ks-detail-item">
+                            <text class="ks-detail-label">专业</text>
+                            <text class="ks-detail-content">{{listdata.major}}</text>
+                        </view>
+                        <view class="ks-detail-item">
+                            <text class="ks-detail-label">四级成绩</text>
+                            <text class="ks-detail-content">{{listdata.CET4}}</text>
+                        </view>
+                        <view class="ks-detail-item">
+                            <text class="ks-detail-label">绩点成绩</text>
+                            <text class="ks-detail-content">{{listdata.GPA}}</text>
+                        </view>
+                        <view class="ks-detail-item">
+                            <text class="ks-detail-label">是否同意降级</text>
+                            <text class="ks-detail-content">{{listdata.downgrade}}</text>
+                        </view>
+                        <view class="ks-detail-item">
+                            <text class="ks-detail-label">毕业选择</text>
+                            <text class="ks-detail-content">{{listdata.choice}}</text>
+                        </view>
+                        <view class="ks-detail-item">
+                            <text class="ks-detail-label">是否攻读博士</text>
+                            <text class="ks-detail-content">{{listdata.PHD}}</text>
+                        </view>
+                    </view>
+                </view>
+        </view>
+<!-- <view class="padding flex flex-direction">
+  <navigator url="/pages/student_info/student_info" hover-class="none">
+    <button type='primary' class="cu-btn block bg-blue margin-tb-sm lg">填写信息</button>
+  </navigator>
+</view> -->

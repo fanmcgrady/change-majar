@@ -1,0 +1,32 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+	<view slot="backText">返回</view>
+  <view slot="content">证明材料</view>
+</cu-custom>
+<view wx:for="{{imgkind}}" wx:key="index">
+	<view class="cu-bar bg-white margin-top">
+			<view class="action">
+				{{item.kind}}
+			</view>
+			<view class="action">
+				{{item.imgbox.length}}/{{item.num}}
+			</view>
+	</view>
+	<view class="cu-form-group">
+		<view class="grid col-4 grid-square flex-sub">
+			<view class="bg-img" wx:for="{{item.imgbox}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{item[index]}}">
+				<image src='{{item}}' mode='aspectFill'></image>
+				<view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+					<text class="cuIcon-close"></text>
+				</view>
+			</view>
+			<view  wx:if="{{item.imgbox.length }} < {{item.num}}" class="solids" bindtap="addPic" data-id="{{item.id}}" >
+				<text class="cuIcon-cameraadd"></text>
+			</view>
+		</view>
+	</view>
+</view>	
+<view>
+	<navigator url="/pages/index/indexs" hover-class="none">
+		<button bindtap="fb" class="cu-btn block bg-blue margin-tb-sm lg">上传图片</button>
+  </navigator>
+</view>

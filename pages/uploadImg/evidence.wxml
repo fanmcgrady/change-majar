@@ -1,0 +1,74 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+	<view slot="backText">返回</view>
+  <view slot="content">证明材料</view>
+</cu-custom>
+
+<view class="cu-card case {{isCard?'no-card':''}}">
+  <view class="cu-item shadow">
+    <view class="cu-item" wx:if="{{pdf}}">
+        <button bindtap="openFile" class="cu-btn block bg-blue margin-tb-sm lg">打开pdf</button>
+    </view>
+    <view class="cu-list menu-avatar">
+      <view class="cu-item">
+        <image class="cu-avatar bg-white lg" src="../../images/grade.png"></image>
+        <view class="content flex-sub">
+          <view class="text-grey">可信电子成绩单</view>
+          <view class="text-gray text-sm flex justify-between">
+            成绩单需要含学分绩点，可通过综合教务系统学生端申请
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="cu-item shadow">
+    <view class="image" wx:for="{{url1}}">
+      <image src="{{url1}}" mode="widthFix"></image>
+    </view>
+    <view class="cu-list menu-avatar">
+      <view class="cu-item">
+        <image class="cu-avatar bg-white lg" src="../../images/CET4.png"></image>
+        <view class="content flex-sub">
+          <view class="text-grey">四级成绩证明</view>
+          <view class="text-gray text-sm flex justify-between">
+            成绩单扫描件或网页查分截图
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="cu-item shadow">
+    <view class="image" wx:for="{{url2}}">
+      <image src="{{item}}" mode="widthFix"></image>
+    </view>
+    <view class="cu-list menu-avatar">
+      <view class="cu-item">
+        <image class="cu-avatar bg-white lg" src="../../images/activity.png"></image>
+        <view class="content flex-sub">
+          <view class="text-grey">其他证明材料</view>
+          <view class="text-gray text-sm flex justify-between">
+            图片中可反映本人大学期间的获奖、学术成果、学生工作、社会实践经历等信息
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="cu-item shadow">
+    <view class="image" wx:for="{{url3}}">
+      <image src="{{item}}" mode="widthFix"></image>
+    </view>
+    <view class="cu-list menu-avatar">
+      <view class="cu-item">
+        <image class="cu-avatar bg-white lg" src="../../images/speciality.png"></image>
+        <view class="content flex-sub">
+          <view class="text-grey">特长的证明材料</view>
+          <view class="text-gray text-sm flex justify-between">
+            网络安全相关的发明专利、相关软件、相关获奖证书、二名以上网络安全领域专家的推荐信等
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

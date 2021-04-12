@@ -1,0 +1,25 @@
+<!--index.wxml-->
+<cu-custom bgColor="bg-gradual-blue">
+  <view slot="content">身份选择</view>
+</cu-custom>
+
+
+<view class="user-container" style="background-image: url('https://halo-1259052167.cos.ap-chengdu.myqcloud.com/img/cao.jpg');background-size:cover;opacity:{{1}};width:{{ScreenTotalW}}rpx;height:1182rpx;">
+  <view class=" flex align-center">
+    <view class="flex-sub text-center">
+    <view class="padding-xl radius shadow margin-top">
+      <view class=" margin-top:300px text-xl padding margin-bottom:300px">
+        <text class="text-bold text-white text-shadow">欢迎进入四川大学网络空间安全学院转专业小程序！</text>
+      </view>
+      </view>
+    </view>
+  </view>
+<view class=" container">
+<view class="padding-xl radius shadow margin-top">
+<view class="margin-top:300px padding flex flex-direction">
+  <button class="bordersize cu-btn round block line-white text-bold lg margin-tb-sm bordersize shadow" bindtap="bindTap_stu_login">学生端入口</button>
+  <button class="cu-btn round block line-white text-bold lg margin-tb-sm bordersize shadow" bindtap="bindTap_teacher_login">教师端入口</button>
+</view>
+</view>
+</view>
+</view>

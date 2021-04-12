@@ -1,0 +1,7 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">性别</view>
+</cu-custom>
+<view class="container">
+	<chart width="320px" height="500px" chart-class="chart" option="{{ option }}" bindinstance="onInstance"/>
+</view>

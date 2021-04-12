@@ -1,0 +1,18 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">课程</view>
+</cu-custom>
+    <view class="table">
+      <view class="tr">
+          <view class="th th1">姓名</view>
+          <view class="th th2">学号</view>
+          <view class="th th3">修读学分</view>
+					<view class="th th4">是否达到要求</view>
+      </view>
+      <view class="tr" wx:for="{{stu}}">
+          <view class="td td1 {{item.judge=='否'? 'tdjudge':''}}">{{item.name}}</view>
+          <view class="td td2 {{item.judge=='否'? 'tdjudge':''}}">{{item.ID}}</view>
+          <view class="td td3 {{item.judge=='否'? 'tdjudge':''}}">{{item.credit}}</view>
+					<view class="td td4 {{item.judge=='否'? 'tdjudge':''}}">{{item.judge}}</view>
+      </view>
+    </view>

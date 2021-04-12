@@ -1,0 +1,73 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">学生信息</view>
+</cu-custom>
+<!-- 信息填写 -->
+<form bindsubmit='studentFrom'>
+	<view class="cu-form-group">
+		<view class="title">姓名</view>
+		<input type="text" name="name" placeholder="来者何人"></input>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">性别</view>
+		<picker bindchange="Picker1Change" value="{{indexSex}}" range="{{picker1}}">
+			<view class="picker">
+				{{indexSex?picker1[indexSex]:'请选择'}}
+			</view>
+		</picker>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">学号</view>
+		<input type="number" name="ID" placeholder="川大学号"></input>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">电话</view>
+		<input type="number" name="phone" placeholder="联系方式"></input>
+	</view>
+
+	<view class="cu-form-group">
+		<view class="title">原学院和专业</view>
+		<picker mode="multiSelector" bindchange="MultiChange" bindcolumnchange="MultiColumnChange" value="{{multiIndex}}"
+		 range="{{multiArray}}">
+			<view class="picker">
+				{{multiArray[0][multiIndex[0]]}}-{{multiArray[1][multiIndex[1]]}}
+			</view>
+		</picker>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">四级成绩</view>
+		<input type="number" name="CET4" placeholder=""></input>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">绩点成绩</view>
+		<input type="digit" name="GPA" placeholder=""></input>
+	</view>
+
+	<view class="cu-form-group">
+		<view class="title">转专业是否同意降级</view>
+		<picker bindchange="Picker2Change" value="{{indexDowngrade}}" range="{{picker2}}">
+			<view class="picker">
+				{{indexDowngrade?picker2[indexDowngrade]:'请选择'}}
+			</view>
+		</picker>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">毕业选择</view>
+		<picker bindchange="Picker3Change" value="{{indexChoice}}" range="{{picker3}}">
+			<view class="picker">
+				{{indexChoice?picker3[indexChoice]:'请选择'}}
+			</view>
+		</picker>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">是否攻读博士</view>
+		<picker bindchange="Picker4Change" value="{{indexPHD}}" range="{{picker4}}">
+			<view class="picker">
+				{{indexPHD?picker4[indexPHD]:'请选择'}}
+			</view>
+		</picker>
+	</view>
+	<view class="padding flex flex-direction">
+  <button formType="submit" type='primary' class="cu-btn block bg-blue margin-tb-sm lg">提交</button>
+	</view>
+</form>
