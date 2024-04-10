@@ -46,5 +46,8 @@
       </button>
     </view>
   </view>
+  <!-- <view class="text-center margin-top">
+  <text class="text-grey text-xl">      有任何疑问，欢迎加入网安2021转专业群：751171641</text>
+  </view> -->
   <view class="cu-tabbar-height"></view>
 </scroll-view>

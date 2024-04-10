@@ -1,168 +1,164 @@
 {
-  "cloudfunctionRoot": "cloudfunction/",
-  "description": "项目配置文件",
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": true,
-    "es6": true,
-    "enhance": true,
-    "postcss": true,
-    "preloadBackgroundData": false,
-    "minified": true,
-    "newFeature": true,
-    "coverView": true,
-    "nodeModules": false,
-    "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
-    "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
-    "useMultiFrameRuntime": false,
-    "useApiHook": true,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
+    "cloudfunctionRoot": "cloudfunction/",
+    "description": "项目配置文件",
+    "packOptions": {
+        "ignore": [],
+        "include": []
     },
-    "enableEngineNative": false,
-    "bundle": false,
-    "useIsolateContext": true,
-    "useCompilerModule": true,
-    "userConfirmedUseCompilerModuleSwitch": false,
-    "packNpmManually": false,
-    "packNpmRelationList": [],
-    "minifyWXSS": true
-  },
-  "compileType": "miniprogram",
-  "libVersion": "2.16.0",
-  "appid": "wx85913d7b3379a001",
-  "projectname": "change_major_system",
-  "debugOptions": {
-    "hidedInDevtools": []
-  },
-  "isGameTourist": false,
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
-  "condition": {
-    "plugin": {
-      "list": []
+    "setting": {
+        "urlCheck": false,
+        "es6": false,
+        "enhance": true,
+        "postcss": true,
+        "preloadBackgroundData": false,
+        "minified": true,
+        "newFeature": true,
+        "coverView": true,
+        "nodeModules": true,
+        "autoAudits": false,
+        "showShadowRootInWxmlPanel": true,
+        "scopeDataCheck": false,
+        "uglifyFileName": false,
+        "checkInvalidKey": true,
+        "checkSiteMap": true,
+        "uploadWithSourceMap": true,
+        "compileHotReLoad": false,
+        "useMultiFrameRuntime": true,
+        "useApiHook": true,
+        "useApiHostProcess": true,
+        "babelSetting": {
+            "ignore": [],
+            "disablePlugins": [],
+            "outputPath": ""
+        },
+        "enableEngineNative": false,
+        "bundle": false,
+        "useIsolateContext": true,
+        "useCompilerModule": true,
+        "userConfirmedUseCompilerModuleSwitch": false,
+        "userConfirmedBundleSwitch": false,
+        "packNpmManually": false,
+        "packNpmRelationList": [],
+        "minifyWXSS": true,
+        "ignoreUploadUnusedFiles": true
     },
-    "game": {
-      "list": []
-    },
-    "gamePlugin": {
-      "list": []
-    },
-    "miniprogram": {
-      "list": [
-        {
-          "name": "pages/student_info/student_info",
-          "pathName": "pages/student_info/student_info",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/index/indexs",
-          "pathName": "pages/index/indexs",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/echarts/echarts",
-          "pathName": "pages/echarts/echarts",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/mine/mine",
-          "pathName": "pages/mine/mine",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/student_info/show",
-          "pathName": "pages/student_info/show",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/uploadImg/uploadImg",
-          "pathName": "pages/uploadImg/uploadImg",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/uploadImg/evidence",
-          "pathName": "pages/uploadImg/evidence",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/course/course",
-          "pathName": "pages/course/course",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/course/show",
-          "pathName": "pages/course/show",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/statistic_chart/chart4/chart4",
-          "pathName": "pages/statistic_chart/chart4/chart4",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/statistic_chart/chart5/chart5",
-          "pathName": "pages/statistic_chart/chart5/chart5",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/login_stu_or_teacher/login_stu_or_teacher",
-          "pathName": "pages/login_stu_or_teacher/login_stu_or_teacher",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/index/indext",
-          "pathName": "pages/index/indext",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/uploadImg/uploadPDF",
-          "pathName": "pages/uploadImg/uploadPDF",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/informs/inform1",
-          "pathName": "pages/informs/inform1",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/bind/bind",
-          "pathName": "pages/bind/bind",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/statistic_chart/index/index",
-          "pathName": "pages/statistic_chart/index/index",
-          "query": "",
-          "scene": null
+    "compileType": "miniprogram",
+    "libVersion": "2.16.0",
+    "appid": "wx381d76e23b2642f7",
+    "projectname": "change_major_system",
+    "simulatorType": "wechat",
+    "simulatorPluginLibVersion": {},
+    "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
+    "condition": {
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "pages/student_info/student_info",
+                    "pathName": "pages/student_info/student_info",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/index/indexs",
+                    "pathName": "pages/index/indexs",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/echarts/echarts",
+                    "pathName": "pages/echarts/echarts",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/mine/mine",
+                    "pathName": "pages/mine/mine",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/student_info/show",
+                    "pathName": "pages/student_info/show",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/uploadImg/uploadImg",
+                    "pathName": "pages/uploadImg/uploadImg",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/uploadImg/evidence",
+                    "pathName": "pages/uploadImg/evidence",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/course/course",
+                    "pathName": "pages/course/course",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/course/show",
+                    "pathName": "pages/course/show",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/statistic_chart/chart4/chart4",
+                    "pathName": "pages/statistic_chart/chart4/chart4",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/statistic_chart/chart5/chart5",
+                    "pathName": "pages/statistic_chart/chart5/chart5",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/login_stu_or_teacher/login_stu_or_teacher",
+                    "pathName": "pages/login_stu_or_teacher/login_stu_or_teacher",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/index/indext",
+                    "pathName": "pages/index/indext",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/uploadImg/uploadPDF",
+                    "pathName": "pages/uploadImg/uploadPDF",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/informs/inform1",
+                    "pathName": "pages/informs/inform1",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/bind/bind",
+                    "pathName": "pages/bind/bind",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "pages/statistic_chart/index/index",
+                    "pathName": "pages/statistic_chart/index/index",
+                    "query": "",
+                    "scene": null
+                }
+            ]
         }
-      ]
+    },
+    "editorSetting": {
+        "tabIndent": "insertSpaces",
+        "tabSize": 4
     }
-  }
 }

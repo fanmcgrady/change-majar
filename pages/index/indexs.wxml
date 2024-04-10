@@ -4,11 +4,10 @@
 </cu-custom>
 <view class="bg-img bg-mask padding-tb-xl" style="background-image: url('http://www.scu.edu.cn/__local/F/7E/D2/37200E7397E6420AEEF00ADF765_DA476BF1_B226C.jpg');height: 300rpx;">
   <view class="padding-xl text-white">
-    <view class="solid-bottom text-df padding">
-      欢迎使用四川大学网络空间安全学院转专业系统！
-    </view>
-    <view class="solid-bottom text-df padding">
-      Welcome to SCU Cyberspace Security College！
+    <view class="solid-bottom text-df padding" style="text-indent:2em;text-align:center;white-space:pre-wrap;">
+      欢迎进入网络空间安全学院转专业信息填报
+      小程序
+      网安2024转专业群：956014339
     </view>
   </view>
 </view>
@@ -25,10 +24,12 @@
 </scroll-view> -->
 <view class="cu-bar bg-white solid-bottom margin-top">
   <view class="action">
-    <text class="cuIcon-title text-orange"></text> 操作指引
+    <text class="cuIcon-title text-orange"></text> 
+    <text wx:if="{{num < 5}}">操作指引</text>
+    <text wx:else>转专业信息填报成功！</text>
   </view>
   <view class="action" wx:if="{{num < 5}}">
-    <button class="cu-btn bg-green shadow" bindtap="numSteps">下一步</button>
+    <button class="cu-btn bg-green shadow" bindtap="numSteps" id="button_nextstep" disabled="{{lock}}">下一步</button>
   </view>
 </view>
 <view class="bg-white padding">
@@ -39,60 +40,19 @@
   </view>
 </view>
 <view class="cu-card article {{isCard?'no-card':''}}">
-  <view bindtap="inform1"  class="cu-item shadow">
+  <view bindtap=""  class="cu-item shadow">
     <view class="title">
-      <view class="text-cut">通知1</view>
+      <view class="text-cut">网络空间安全学院2024年转专业说明会</view>
     </view>
     <view class="content">
-      <image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" mode="aspectFill"></image>
+      <image src="http://scu.edu.cn/__local/2/3F/55/8B7F9FE4363755480E863B96813_06ECD491_A9DA0.jpg" mode="aspectFill"></image>
       <view class="desc">
-        <view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
+        <view class="text-content" style="white-space:pre-wrap;">会议时间：2024/04/15 \n腾讯会议ID：待定
+        </view>
         <view>
           <view class="cu-tag bg-blue light sm round">宣讲会</view>
-          <view class="cu-tag bg-red light sm round">2020/12/05</view>
-          <view class="cu-tag bg-green light sm round">二基楼</view>
-        </view>
-      </view>
-    </view>
-  </view>
-</view>
-
-
-<view class="cu-card article {{isCard?'no-card':''}}">
-  <view class="cu-item shadow">
-    <view class="title">
-      <view class="text-cut">通知2</view>
-    </view>
-    <view class="content">
-      <image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" mode="aspectFill"></image>
-      <view class="desc">
-        <view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
-        <view>
-          <view class="cu-tag bg-blue light sm round">笔试</view>
-          <view class="cu-tag bg-red light sm round">2020/12/05</view>
-          <view class="cu-tag bg-green light sm round">综合楼</view>
-        </view>
-      </view>
-    </view>
-  </view>
-</view>
-
-
-
-
-<view class="cu-card article {{isCard?'no-card':''}}">
-  <view class="cu-item shadow">
-    <view class="title">
-      <view class="text-cut">通知3</view>
-    </view>
-    <view class="content">
-      <image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg" mode="aspectFill"></image>
-      <view class="desc">
-        <view class="text-content"> 折磨生出苦难，苦难又会加剧折磨，凡间这无穷的循环，将有我来终结！真正的恩典因不完整而美丽，因情感而真诚，因脆弱而自由！</view>
-        <view>
-          <view class="cu-tag bg-blue light sm round">面试</view>
-          <view class="cu-tag bg-red light sm round">2020/12/05</view>
-          <view class="cu-tag bg-green light sm round">一教</view>
+          <view class="cu-tag bg-red light sm round">2024/04/15</view>
+          <view class="cu-tag bg-green light sm round">腾讯会议</view>
         </view>
       </view>
     </view>

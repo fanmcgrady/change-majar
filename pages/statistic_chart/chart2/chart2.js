@@ -16,11 +16,10 @@ Page({
     wx.cloud.callFunction({
       name: "get_major_data",
       success(res) {
-        console.log("读取成功", res.result.list)
         var xAxis = [];
         var yAxis = [];
         for (var index in res.result.list) {
-          xAxis.push(res.result.list[index]._id)
+          xAxis.push(res.result.list[index]._id == null ? "未填基本信息": res.result.list[index]._id)
           yAxis.push(res.result.list[index].num)
         }
         that.setData({
@@ -33,16 +32,36 @@ Page({
                 data:['人数']
             },
             xAxis: {
-                data: xAxis
+                data: xAxis,
+                axisLabel:{
+                  interval: 0,
+                  formatter: function (value) {
+                    //x轴的文字改为竖版显示
+                    var str = value.split("");
+                    return str.join("\n");
+                  }
+                }
             },
-            dataZoom: {
-                show :true,
+            grid: {
+                y2: 200
             },
             yAxis: {},
             series: [{
                 name: '人数',
                 type: 'bar',
-                data: yAxis
+                data: yAxis,
+                itemStyle: {
+                  normal: {
+                    label: {
+                      show: true, //开启显示
+                      position: 'top', //在上方显示
+                      textStyle: { //数值样式
+                        color: 'black',
+                        fontSize: 16
+                      }
+                    }
+                  }
+                },
             }]
           }
         })

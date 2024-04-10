@@ -2,10 +2,10 @@
   <view slot="backText">返回</view>
   <view slot="content">学院</view>
 </cu-custom>
-<view class="container">
+<view class="container" style="margin:20rpx;">
 	<!-- <navigator url="plugin://echarts/charts?notMerge=true&title=示例折线图&title-style=black">图表单页</navigator> -->
 	<!-- <navigator url="plugin://echarts/charts?notMerge=true&title=示例折线图&title-style=black" extra-data="{{option}}">图表单页</navigator> -->
-	<chart  width="320px" height="500px" chart-class="chart" lazyUpdate="true" option="{{option}}" bindinstance="onInstance" />
+	<chart width="100%" height="1200rpx" chart-class="chart" lazyUpdate="true" option="{{option}}" bindinstance="onInstance" />
 </view>
 
 <!-- <view class="container">

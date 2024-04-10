@@ -34,6 +34,12 @@ Page({
     password = event.detail.value//将用户输入的密码放到变量里面
   },
   login(){
+    wx.navigateTo({
+        url: '/pages/student_info/student_info'
+    })
+    return;
+
+
     wx.showLoading({
       title: '身份认证中',
      })
@@ -49,10 +55,16 @@ Page({
         scuer: res.result.realname
       })
       if(res.result.realname != null){
+        // 加入到globaldata中
+        app.globalData.name = res.result.realname;
+        app.globalData.studentid = res.result.number;
+
         db.collection('student_info').add({
           // data 字段表示需新增的 JSON 数据
           data: {
-            _id: this.data.openid
+            _id: this.data.openid,
+            ID: res.result.number,
+            name: res.result.realname
           }
         })
         .then(res => {

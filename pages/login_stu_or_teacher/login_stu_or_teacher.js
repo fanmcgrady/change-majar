@@ -26,6 +26,10 @@ Page({
   },
 
   onLoad: function () {
+    this.setData({
+      ScreenTotalW: wx.getSystemInfoSync().windowHeight,
+      ScreenTotalH: wx.getSystemInfoSync().windowWidth
+    })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

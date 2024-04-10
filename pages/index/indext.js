@@ -11,12 +11,6 @@ Page({
     }, {
       id: 'chart3',
       name: '男女比例'
-    }, {
-      id: 'chart4',
-      name: '未修课程'
-    }, {
-      id: 'chart5',
-      name: '不满要求'
     },{
       id: 'down',
       name: '下载表格'

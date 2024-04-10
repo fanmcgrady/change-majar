@@ -41,7 +41,11 @@ Page({
                   avoidLabelOverlap: false,
                   label: {
                       show: false,
-                      position: 'center'
+                      position: 'center',
+                      normal: {
+                        show: true,
+                        formatter: '{b}: {c}({d}%)'
+                    }
                   },
                   emphasis: {
                       label: {

@@ -4,7 +4,9 @@ const axios = require("axios");
 const cheerio = require('cheerio');
 const md5 = require('md5-node');
 const querystring = require('querystring');
-cloud.init()
+cloud.init({
+    env: 'ccs2024-6g6fcfmm79adc132'
+  })
 // 云函数入口函数
 exports.main = async (event, context) => {
 // 为给定 ID 的 user 创建请求
@@ -36,14 +38,16 @@ var realname = null
 var reg = new RegExp(/<small>欢迎您，<\/small>([\S\s]*?)<\/span>/)
 if(res2['data'].match(reg) == null){
   return{
-    realname: null
+    realname: null,
+    number: username
   }
 }
 else{
   // console.log(res2['data'].match(reg)[1].trim())
   var realname = res2['data'].match(reg)[1].trim()
   return{
-    realname: realname
+    realname: realname,
+    number: username
   }
 }
 }

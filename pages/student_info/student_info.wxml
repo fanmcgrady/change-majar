@@ -6,7 +6,7 @@
 <form bindsubmit='studentFrom'>
 	<view class="cu-form-group">
 		<view class="title">姓名</view>
-		<input type="text" name="name" placeholder="来者何人"></input>
+		<input type="text" name="name" placeholder="姓名" value="{{name}}"></input>
 	</view>
 	<view class="cu-form-group">
 		<view class="title">性别</view>
@@ -18,14 +18,14 @@
 	</view>
 	<view class="cu-form-group">
 		<view class="title">学号</view>
-		<input type="number" name="ID" placeholder="川大学号"></input>
+		<input type="number" name="ID" placeholder="学号" value="{{ID}}"></input>
 	</view>
 	<view class="cu-form-group">
 		<view class="title">电话</view>
 		<input type="number" name="phone" placeholder="联系方式"></input>
 	</view>
 
-	<view class="cu-form-group">
+	<!-- <view class="cu-form-group">
 		<view class="title">原学院和专业</view>
 		<picker mode="multiSelector" bindchange="MultiChange" bindcolumnchange="MultiColumnChange" value="{{multiIndex}}"
 		 range="{{multiArray}}">
@@ -33,14 +33,22 @@
 				{{multiArray[0][multiIndex[0]]}}-{{multiArray[1][multiIndex[1]]}}
 			</view>
 		</picker>
+	</view> -->
+	<view class="cu-form-group">
+		<view class="title">原学院</view>
+		<input type="text" name="college" placeholder=""></input>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">原专业</view>
+		<input type="text" name="major" placeholder=""></input>
 	</view>
 	<view class="cu-form-group">
 		<view class="title">四级成绩</view>
 		<input type="number" name="CET4" placeholder=""></input>
 	</view>
 	<view class="cu-form-group">
-		<view class="title">绩点成绩</view>
-		<input type="digit" name="GPA" placeholder=""></input>
+		<view class="title">必修绩点成绩</view>
+		<input type="digit" name="GPA" placeholder="如实填写可信成绩单中必修绩点"></input>
 	</view>
 
 	<view class="cu-form-group">

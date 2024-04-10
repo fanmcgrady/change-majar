@@ -1,16 +1,26 @@
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
-  <view slot="backText">返回</view>
-  <view slot="content">身份认证</view>
+    <view slot="backText">返回</view>
+    <view slot="content">通知公告</view>
 </cu-custom>
-<view class="cu-form-group margin-top">
+<!-- <view class="cu-form-group margin-top">
 		<view class="title" style="font-weight:bolder;">学号：</view>
-		<input bindinput="inputName" placeholder="请输入你的学号"></input>
+		<input bindinput="inputName" placeholder="请输入你的学号" value="2020141530121">
+        </input>
 </view>
 <view class="cu-form-group">
 		<view class="title" style="font-weight:bolder;">密码：</view>
-		<input bindinput="inputPassword" placeholder="请输入密码" password></input>
+		<input bindinput="inputPassword" placeholder="请输入密码" password value="118812"></input>
+</view> -->
+<view class="padding bg-white">
+    <view class="text-center padding" style="color:red">注意事项！</view>
+    <view class="text-left padding">1. 必修课学分绩点以可信成绩单中数据为准，请如实填写！</view>
+    <view class="text-left padding">2. 请确保填写的所有信息真实有效！</view>
+    <view class="text-left padding">3. 每一步信息提交后，不能再修改请仔细核对后提交！</view>
+    <view class="text-left padding">4. 第六步即为转专业要求中提到的《网络空间安全学院申请转入学生课程修读情况调查表》！</view>
+    <view class="text-left padding">5、所有信息填报成功后，即可登录网安编程平台（https://acm.scu.edu.cn/teach/）进行编程练习</view>
+    <view class="margin-left: 40px">账号：学号，密码：123</view>
 </view>
 <view class="padding flex flex-direction">
-  <button  class="cu-btn block bg-blue margin-tb-sm lg" bindtap="login">
-    <text class="cuIcon-check"></text> 认证</button>
+    <button class="cu-btn block bg-blue margin-tb-sm lg" bindtap="login">
+        <text class="cuIcon-check" decode>&nbsp;&nbsp;</text>开始填报转专业信息</button>
 </view>

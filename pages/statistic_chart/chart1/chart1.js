@@ -13,7 +13,7 @@ Page({
         var xAxis = [];
         var yAxis = [];
         for (var index in res.result.list) {
-          xAxis.push(res.result.list[index]._id)
+          xAxis.push(res.result.list[index]._id == null ? "未填基本信息": res.result.list[index]._id)
           yAxis.push(res.result.list[index].num)
         }
         that.setData({
@@ -25,17 +25,35 @@ Page({
             legend: {
                 data:['人数']
             },
+            grid: {y2: 200},
             xAxis: {
-                data: xAxis
-            },
-            dataZoom: {
-                show :true,
+                data: xAxis,
+                axisLabel:{
+                  interval: 0,
+                  formatter: function (value) {
+                    //x轴的文字改为竖版显示
+                    var str = value.split("");
+                    return str.join("\n");
+                  }
+                }
             },
             yAxis: {},
             series: [{
                 name: '人数',
                 type: 'bar',
-                data: yAxis
+                data: yAxis,
+                itemStyle: {
+                  normal: {
+                    label: {
+                      show: true, //开启显示
+                      position: 'top', //在上方显示
+                      textStyle: { //数值样式
+                        color: 'black',
+                        fontSize: 16
+                      }
+                    }
+                  }
+                },
             }]
           }
         })

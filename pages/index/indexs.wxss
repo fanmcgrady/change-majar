@@ -23,3 +23,6 @@ image[class*="gif-"] {
   border-radius: 6rpx;
   display: block;
 }
+#button_nextstep{
+  z-index: 999;
+}

@@ -29,7 +29,7 @@ Page({
               sex:res.data[0].sex,
               name:res.data[0].name,
               finishCredit: res.data[0].credit,
-              unfinishCredit: 46 - res.data[0].credit
+              unfinishCredit: 43 - res.data[0].credit
             })
             // console.log(that.data.listdata[0].finish)
           }
