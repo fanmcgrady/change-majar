@@ -1,10 +1,6 @@
 {
     "cloudfunctionRoot": "cloudfunction/",
     "description": "项目配置文件",
-    "packOptions": {
-        "ignore": [],
-        "include": []
-    },
     "setting": {
         "urlCheck": false,
         "es6": false,
@@ -24,8 +20,6 @@
         "uploadWithSourceMap": true,
         "compileHotReLoad": false,
         "useMultiFrameRuntime": true,
-        "useApiHook": true,
-        "useApiHostProcess": true,
         "babelSetting": {
             "ignore": [],
             "disablePlugins": [],
@@ -43,9 +37,6 @@
         "ignoreUploadUnusedFiles": true
     },
     "compileType": "miniprogram",
-    "libVersion": "2.16.0",
-    "appid": "wx381d76e23b2642f7",
-    "projectname": "change_major_system",
     "simulatorType": "wechat",
     "simulatorPluginLibVersion": {},
     "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
@@ -160,5 +151,11 @@
     "editorSetting": {
         "tabIndent": "insertSpaces",
         "tabSize": 4
-    }
+    },
+    "libVersion": "2.16.0",
+    "packOptions": {
+        "ignore": [],
+        "include": []
+    },
+    "appid": "wx381d76e23b2642f7"
 }

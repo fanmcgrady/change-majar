@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/index/indext",
     "pages/index/indexs",
     "pages/login_stu_or_teacher/login_stu_or_teacher",
 
-    "pages/index/indext",
+    
     
     "pages/student_info/student_info",
     "pages/mine/mine",

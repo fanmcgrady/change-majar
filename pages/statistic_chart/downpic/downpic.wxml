@@ -6,4 +6,8 @@
 文件下载地址表下载中，如果下载失败，请点击复制url用浏览器打开。
 
 <button class="cu-btn block line-orange lg" bindtap="copyFileUrl">
-    <text class="cuIcon-upload"></text> 复制下载链接</button>
+  <text class="cuIcon-upload"></text> 复制下载链接
+</button>
+<button class="cu-btn block line-orange lg" bindtap="savaExcel">
+  <text class="cuIcon-upload"></text> 下载
+</button>

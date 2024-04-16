@@ -24,6 +24,7 @@ exports.main = async(event, context) => {
       arr.push(userdata[key].tempFileURL);
       alldata.push(arr)
     }
+    console.log(alldata);
     //3，把数据保存到excel里
     var buffer = await xlsx.build([{
       name: "mySheetName",

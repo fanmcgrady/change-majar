@@ -19,7 +19,7 @@ Page({
     onLoad: function (options) {
         //数据库单次最多取20个数据（小程序端）
         for (var i = 0; i < 2; i++) {
-            db.collection('course_info')
+            db.collection('course_info').orderBy('_id', 'asc')
                 .skip(i*10)
                 .limit(10)
                 .get()
@@ -80,7 +80,8 @@ Page({
         this.setData({
             credit: 0
         })
-  
+        console.log(this.data.list);
+
         db.collection('student_info').doc(this.data.openid).update({
             // data 传入需要局部更新的数据
             data: {
