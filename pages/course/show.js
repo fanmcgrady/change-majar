@@ -3,6 +3,7 @@ const db = wx.cloud.database();
 const app = getApp();
 Page({
    data:{
+        totalCredit: 46,
         listdata:[],  //这是一个空的数组，等下获取到云数据库的数据将存放在其中
         id:"",
         sex:"",
@@ -29,7 +30,7 @@ Page({
               sex:res.data[0].sex,
               name:res.data[0].name,
               finishCredit: res.data[0].credit,
-              unfinishCredit: 43 - res.data[0].credit
+              unfinishCredit: that.data.totalCredit - res.data[0].credit
             })
             // console.log(that.data.listdata[0].finish)
           }

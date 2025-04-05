@@ -13,11 +13,11 @@
 </view> -->
 <view class="padding bg-white">
     <view class="text-center padding" style="color:red">注意事项！</view>
-    <view class="text-left padding">1. 必修课学分绩点以可信成绩单中数据为准，请如实填写！</view>
-    <view class="text-left padding">2. 请确保填写的所有信息真实有效！</view>
-    <view class="text-left padding">3. 每一步信息提交后，不能再修改请仔细核对后提交！</view>
+    <view class="text-left padding">1. 请确保填写的所有信息真实有效！</view>
+    <view class="text-left padding">2. 必修课学分绩点以可信成绩单中数据为准，请如实填写！</view>
+    <view class="text-left padding">3. 每一步信息提交后不能再修改，所以请仔细核对后再点击下一步提交！</view>
     <view class="text-left padding">4. 第六步即为转专业要求中提到的《网络空间安全学院申请转入学生课程修读情况调查表》！</view>
-    <view class="text-left padding">5、所有信息填报成功后，即可登录网安编程平台（https://acm.scu.edu.cn/teach/）进行编程练习</view>
+    <view class="text-left padding">5、所有信息填报成功后，即可提前登录网安编程平台（https://acm.scu.edu.cn/teach/）进行编程练习</view>
     <view class="margin-left: 40px">账号：学号，密码：123</view>
 </view>
 <view class="padding flex flex-direction">

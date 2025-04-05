@@ -4,7 +4,7 @@ App({
     onLaunch: function () {
         //云环境初始化
         wx.cloud.init({
-            env: 'ccs2024-6g6fcfmm79adc132',
+            env: 'cloud1-6guiwkxn5ce7075f',
             traceUser: true
         });
         let that = this;

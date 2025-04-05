@@ -1,7 +1,8 @@
 {
   "pages": [
-    "pages/index/indext",
     "pages/index/indexs",
+    "pages/index/indext",
+
     "pages/login_stu_or_teacher/login_stu_or_teacher",
 
     

@@ -4,6 +4,10 @@ const app = getApp()
 const db = wx.cloud.database()
 Page({
     data: {
+        qqGroupNo: '207180839',
+        year: 2025,
+        wemeetingTime: '待定',
+        wemeetingID: '待定',
         motto: 'Hello World',
         userInfo: {},
         hasUserInfo: false,

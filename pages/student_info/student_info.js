@@ -168,7 +168,6 @@ Page({
         // &&this.data.sex!=null &&this.data.downgrade!=null &&this.data.choice!=null &&this.data.PHD!=undefined
 
         if (flag && !this.data.isSubmit) {
-
             db.collection('student_info').add({
                 // data 字段表示需新增的 JSON 数据
                 data: {

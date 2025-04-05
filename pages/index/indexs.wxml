@@ -5,8 +5,8 @@
 <view class="bg-img bg-mask padding-tb-xl" style="background-image: url('http://www.scu.edu.cn/__local/F/7E/D2/37200E7397E6420AEEF00ADF765_DA476BF1_B226C.jpg');height: 300rpx;">
   <view class="padding-xl text-white">
     <view class="solid-bottom text-df padding" style="text-indent:2em;text-align:center;white-space:pre-wrap;">
-      欢迎进入网络空间安全学院转专业信息填报小程序
-      网安2024转专业群：956014339
+      欢迎进入网络空间安全学院转专业填报小程序
+      网安{{year}}转专业群：{{qqGroupNo}}
     </view>
   </view>
 </view>
@@ -41,16 +41,15 @@
 <view class="cu-card article {{isCard?'no-card':''}}">
   <view bindtap=""  class="cu-item shadow">
     <view class="title">
-      <view class="text-cut">网络空间安全学院2024年转专业说明会</view>
+      <view class="text-cut">网络空间安全学院{{year}}年转专业说明会</view>
     </view>
     <view class="content">
       <image src="http://scu.edu.cn/__local/2/3F/55/8B7F9FE4363755480E863B96813_06ECD491_A9DA0.jpg" mode="aspectFill"></image>
       <view class="desc">
-        <view class="text-content" style="white-space:pre-wrap;">会议时间：2024/04/12 20:00-21:00 \n腾讯会议ID：956-949-468
+        <view class="text-content" style="white-space:pre-wrap;">会议时间：{{wemeetingTime}} \n腾讯会议ID：{{wemeetingID}}
         </view>
         <view>
           <view class="cu-tag bg-blue light sm round">宣讲会</view>
-          <view class="cu-tag bg-red light sm round">2024/04/12</view>
           <view class="cu-tag bg-green light sm round">腾讯会议</view>
         </view>
       </view>
