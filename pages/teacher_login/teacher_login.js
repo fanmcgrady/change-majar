@@ -3,7 +3,7 @@
 let app = getApp();
 // 获取云数据库引用
 const db = wx.cloud.database({
-env:'fangzhiyang-vaot3'
+  env:'cloud1-6guiwkxn5ce7075f'
 });
 const admin = db.collection('teacher_user');//注意，这里就是刚才的集合的名字——user
 admin.get({

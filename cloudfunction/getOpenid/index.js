@@ -1,6 +1,6 @@
 const cloud = require('wx-server-sdk')
 cloud.init({
-    env: 'ccs2024-6g6fcfmm79adc132'
+    env: 'cloud1-6guiwkxn5ce7075f'
   })
 exports.main = async (event, context) => {
     const wxContext = cloud.getWXContext()

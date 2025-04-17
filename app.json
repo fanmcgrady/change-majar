@@ -1,9 +1,11 @@
 {
   "pages": [
-    "pages/index/indexs",
-    "pages/index/indext",
 
+    "pages/index/indext",
+    "pages/index/indexs",
     "pages/login_stu_or_teacher/login_stu_or_teacher",
+
+
 
     
     

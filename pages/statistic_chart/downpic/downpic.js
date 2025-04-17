@@ -28,7 +28,7 @@ Page({
         console.log("附件共：" + length + "条");
         // 每次取50，concat
         for (var i = 0; i < length; i += 50) {
-          
+          console.log(that.data.fileList.slice(i, i + 50));
           wx.cloud.getTempFileURL({
             fileList: that.data.fileList.slice(i, i + 50),
             success: res => {
@@ -52,6 +52,7 @@ Page({
   //把数据保存到excel里，并把excel保存到云存储
   savaExcel() {
     let that = this
+    console.log(that.data.fileurlhttp);
     wx.cloud.callFunction({
       name: "get_all_url_excel",
       data: {
