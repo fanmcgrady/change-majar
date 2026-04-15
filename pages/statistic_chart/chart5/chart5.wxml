@@ -1,0 +1,20 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">特长</view>
+</cu-custom>
+    <view class="table">
+      <view class="tr">
+          <view class="th th1">姓名</view>
+          <view class="th th2">学号</view>
+          <view class="th th3">上传特长材料照片</view>
+      </view>
+      <view class="tr" wx:for="{{stu}}" wx:for-item="item">
+          <view class="td td1" >{{item.name}}</view>
+          <view class="td td2">{{item.ID}}</view>
+          <view class="td td3" >
+						<view wx:for='{{item.specialty}}' wx:for-item="j">
+								 <image src="{{j}}"></image>						
+						</view>
+					</view>
+      </view>
+    </view>

@@ -1,0 +1,58 @@
+<!--index.wxml-->
+<cu-custom bgColor="bg-gradual-blue">
+  <view slot="content">首页</view>
+</cu-custom>
+<view class="bg-img bg-mask padding-tb-xl" style="background-image: url('http://www.scu.edu.cn/__local/F/7E/D2/37200E7397E6420AEEF00ADF765_DA476BF1_B226C.jpg');height: 300rpx;">
+  <view class="padding-xl text-white">
+    <view class="solid-bottom text-df padding" style="text-indent:2em;text-align:center;white-space:pre-wrap;">
+      欢迎进入网络空间安全学院转专业填报小程序
+      网安{{year}}转专业群：{{qqGroupNo}}
+    </view>
+  </view>
+</view>
+<!-- <scroll-view scroll-x class="bg-gradual-blue nav text-center">
+  <view class="cu-item {{1==TabCur?'text-white cur':''}}" bindtap="tabSelect1" data-id="1">
+    <text class="cuIcon-noticefill"></text> 基本信息
+  </view>
+  <view class="cu-item {{0==TabCur?'text-white cur':''}}" bindtap="tabSelect2" data-id="0">
+    <text class="cuIcon-edit"></text> 课程调查
+  </view>
+  <view class="cu-item {{2==TabCur?'text-white cur':''}}" bindtap="tabSelect3" data-id="2">
+    <text class="cuIcon-peoplefill"></text> 证明材料
+  </view>
+</scroll-view> -->
+<view class="cu-bar bg-white solid-bottom margin-top">
+  <view class="action">
+    <text class="cuIcon-title text-orange"></text> 
+    <text wx:if="{{num < 5}}">操作指引</text>
+    <text wx:else>转专业信息填报成功！</text>
+  </view>
+  <view class="action" wx:if="{{num < 5}}">
+    <button class="cu-btn bg-green shadow" bindtap="numSteps" id="button_nextstep" disabled="{{lock}}">下一步</button>
+  </view>
+</view>
+<view class="bg-white padding">
+  <view class="cu-steps">
+    <view class="cu-item {{index>num?'':'text-blue'}}" wx:for="{{numList}}" wx:key>
+      <text class="num {{false?'err':''}}" data-index="{{index + 1}}"></text> {{item.name}}
+    </view>
+  </view>
+</view>
+<view class="cu-card article {{isCard?'no-card':''}}">
+  <view bindtap=""  class="cu-item shadow">
+    <view class="title">
+      <view class="text-cut">网络空间安全学院{{year}}年转专业说明会</view>
+    </view>
+    <view class="content">
+      <image src="http://scu.edu.cn/__local/2/3F/55/8B7F9FE4363755480E863B96813_06ECD491_A9DA0.jpg" mode="aspectFill"></image>
+      <view class="desc">
+        <view class="text-content" style="white-space:pre-wrap;">会议时间：{{wemeetingTime}} \n腾讯会议ID：{{wemeetingID}}
+        </view>
+        <view>
+          <view class="cu-tag bg-blue light sm round">宣讲会</view>
+          <view class="cu-tag bg-green light sm round">腾讯会议</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

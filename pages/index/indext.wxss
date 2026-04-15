@@ -1,0 +1,27 @@
+
+.panel {
+  display: block;
+  margin-top: 10px;
+  background-color: white;
+  height: 100%;
+}
+
+.panel .chart-with-img {
+  display: inline-block;
+  width: 25%;
+  margin: 10px 4%;
+  text-align: center;
+  font: 1em sans-serif;
+}
+
+.chart-with-img image {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px; 
+  padding: 20px;
+  background-color: #f3f3f3;
+  border: 1px solid #eee;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>课程修读情况调查表</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .course-item {
+            padding: 15px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .course-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+        .course-info {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px;
+            color: #856404;
+        }
+        .warning-box .warning-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .page__bd {
+            padding-bottom: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="page__hd">
+            <h1 class="page__title">网络空间安全学院</h1>
+            <p class="page__desc">申请转入学生课程修读情况调查表</p>
+        </div>
+        <div class="page__bd">
+            <div class="warning-box">
+                <div class="warning-title">重要提示</div>
+                <div>一年级已修必修课程未达网络空间安全专业要求学分的70%的学生需降级</div>
+            </div>
+
+            <div class="weui-cells__title">请勾选您已修读的课程</div>
+            <div class="weui-cells" id="courseList">
+                <!-- 课程列表将通过JS动态生成 -->
+            </div>
+
+            <div class="weui-btn-area">
+                <button class="weui-btn weui-btn_default" id="backBtn">返回</button>
+                <button class="weui-btn weui-btn_primary" id="submitBtn">提交</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content" id="toastMsg">操作成功</p>
+        </div>
+    </div>
+
+    <div id="loadingToast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">加载中</p>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/course-survey.js"></script>
+</body>
+</html>

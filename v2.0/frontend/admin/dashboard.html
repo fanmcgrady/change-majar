@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理后台</title>
+    <link rel="stylesheet" href="../css/weui.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .dashboard-header {
+            background: #1aad19;
+            color: white;
+            padding: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 15px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1aad19;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #999;
+            margin-top: 8px;
+        }
+        .search-bar {
+            padding: 15px;
+            background: white;
+        }
+        .student-item {
+            background: white;
+            margin: 10px 15px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .student-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .student-info {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        .badge-success {
+            background: #1aad19;
+            color: white;
+        }
+        .badge-warning {
+            background: #f60;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="dashboard-header">
+            <h1 style="margin: 0; font-size: 20px;">管理后台</h1>
+            <p style="margin: 8px 0 0; font-size: 14px; opacity: 0.9;">转专业信息管理</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">总人数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="submittedCount">0</div>
+                <div class="stat-label">已提交</div>
+            </div>
+        </div>
+
+        <div class="weui-cells__title">操作</div>
+        <div class="weui-cells">
+            <a class="weui-cell weui-cell_access" href="javascript:;" id="exportBtn">
+                <div class="weui-cell__bd">
+                    <p>导出数据</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;" id="logoutBtn">
+                <div class="weui-cell__bd">
+                    <p>退出登录</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+
+        <div class="search-bar">
+            <div class="weui-search-bar" id="searchBar">
+                <form class="weui-search-bar__form">
+                    <div class="weui-search-bar__box">
+                        <i class="weui-icon-search"></i>
+                        <input type="search" class="weui-search-bar__input" id="searchInput" placeholder="搜索姓名、学号、学院">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="weui-cells__title">学生列表</div>
+        <div id="studentList"></div>
+
+        <div class="weui-loadmore" id="loadmore" style="display: none;">
+            <i class="weui-loading"></i>
+            <span class="weui-loadmore__tips">正在加载</span>
+        </div>
+    </div>
+
+    <div id="toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content" id="toastMsg">操作成功</p>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

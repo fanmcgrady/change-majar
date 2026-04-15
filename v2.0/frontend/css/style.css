@@ -1,0 +1,95 @@
+body {
+    background-color: #f8f8f8;
+}
+
+.page {
+    padding-bottom: 100px;
+}
+
+.page__hd {
+    padding: 40px 20px 20px;
+    text-align: center;
+    background: #1aad19;
+    color: white;
+}
+
+.page__title {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.page__desc {
+    margin-top: 8px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.weui-cells__title {
+    margin-top: 20px;
+}
+
+.weui-btn-area {
+    margin: 30px 15px 0;
+}
+
+.weui-btn-area .weui-btn {
+    margin-bottom: 10px;
+}
+
+/* 修复 select 和 input 对齐问题 */
+.weui-cell_select .weui-cell__hd {
+    margin-left: 15px;
+}
+
+.weui-cell_select .weui-cell__bd:after {
+    right: 15px;
+}
+
+.weui-select {
+    padding-right: 30px;
+}
+
+.weui-uploader__file {
+    position: relative;
+}
+
+.weui-uploader__file-delete {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    background: #f44;
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#toast, #loadingToast {
+    position: fixed;
+    z-index: 5000;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.admin-link {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #1aad19;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}

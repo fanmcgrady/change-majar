@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>转专业信息填报</title>
+    <link rel="stylesheet" href="css/weui.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px;
+            color: #856404;
+        }
+        .warning-box .warning-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .course-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+        .course-info {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="page__hd">
+            <h1 class="page__title">转专业信息填报</h1>
+            <p class="page__desc">请完整填写以下信息</p>
+        </div>
+        <div class="page__bd">
+            <div class="weui-cells__title">基本信息</div>
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">姓名<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" id="name" placeholder="请输入姓名">
+                    </div>
+                </div>
+                <div class="weui-cell weui-cell_select">
+                    <div class="weui-cell__hd"><label class="weui-label">性别<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" id="sex">
+                            <option value="">请选择</option>
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">学号<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" id="student_id" placeholder="请输入学号">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">电话<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="tel" id="phone" placeholder="请输入联系电话">
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-cells__title">原专业信息</div>
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">原学院<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" id="college" placeholder="请输入原学院">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">原专业<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="text" id="major" placeholder="请输入原专业">
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-cells__title">成绩信息</div>
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">四级成绩<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="number" id="cet4" placeholder="请输入四级成绩">
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><label class="weui-label">必修绩点<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="number" step="0.01" id="gpa" placeholder="必须与可信成绩单中必修绩点一致">
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-cells__title">其他信息</div>
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell weui-cell_select">
+                    <div class="weui-cell__hd"><label class="weui-label">是否同意降级<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" id="downgrade">
+                            <option value="">请选择</option>
+                            <option value="是">是</option>
+                            <option value="否">否</option>
+                            <option value="待定">待定</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="weui-cell weui-cell_select">
+                    <div class="weui-cell__hd"><label class="weui-label">毕业选择<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" id="choice">
+                            <option value="">请选择</option>
+                            <option value="国外深造">国外深造</option>
+                            <option value="国内读研">国内读研</option>
+                            <option value="就业">就业</option>
+                            <option value="待定">待定</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="weui-cell weui-cell_select">
+                    <div class="weui-cell__hd"><label class="weui-label">是否攻读博士<span style="color: #e64340;">*</span></label></div>
+                    <div class="weui-cell__bd">
+                        <select class="weui-select" id="phd">
+                            <option value="">请选择</option>
+                            <option value="是">是</option>
+                            <option value="否">否</option>
+                            <option value="待定">待定</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-cells__title">附件上传</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <div class="weui-uploader">
+                            <div class="weui-uploader__hd">
+                                <p class="weui-uploader__title">可信电子成绩单（PDF格式）<span style="color: #e64340;">*必填</span></p>
+                                <div class="weui-uploader__info"><span id="transcript-count">0</span>/1</div>
+                            </div>
+                            <div class="weui-uploader__bd">
+                                <ul class="weui-uploader__files" id="transcriptFiles"></ul>
+                                <div class="weui-uploader__input-box">
+                                    <input id="transcriptInput" class="weui-uploader__input" type="file" accept=".pdf" data-type="transcript">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <div class="weui-uploader">
+                            <div class="weui-uploader__hd">
+                                <p class="weui-uploader__title">四级考试成绩单（PDF格式）<span style="color: #e64340;">*必填</span></p>
+                                <div class="weui-uploader__info"><span id="cet4-count">0</span>/1</div>
+                            </div>
+                            <div class="weui-uploader__bd">
+                                <ul class="weui-uploader__files" id="cet4Files"></ul>
+                                <div class="weui-uploader__input-box">
+                                    <input id="cet4Input" class="weui-uploader__input" type="file" accept=".pdf" data-type="cet4_certificate">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <div class="weui-uploader">
+                            <div class="weui-uploader__hd">
+                                <p class="weui-uploader__title">其他证明材料（PDF格式）</p>
+                                <div class="weui-uploader__info"><span id="other-count">0</span>/1</div>
+                            </div>
+                            <div class="weui-uploader__bd">
+                                <ul class="weui-uploader__files" id="otherFiles"></ul>
+                                <div class="weui-uploader__input-box">
+                                    <input id="otherInput" class="weui-uploader__input" type="file" accept=".pdf" data-type="other">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="weui-cells__title">课程修读情况</div>
+            <div class="warning-box">
+                <div class="warning-title">重要提示</div>
+                <div>一年级已修必修课程未达网络空间安全专业要求学分的70%的学生需降级</div>
+            </div>
+            <div style="padding: 15px;">
+                <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 14px; color: #666;">课程完成度</span>
+                    <span id="coursePercentage" style="font-size: 16px; font-weight: bold; color: #e64340;">0%</span>
+                </div>
+                <div style="height: 10px; background: #e5e5e5; border-radius: 5px; overflow: hidden;">
+                    <div id="courseProgressBar" style="height: 100%; width: 0%; background: #e64340; transition: width 0.3s ease, background 0.3s ease;"></div>
+                </div>
+            </div>
+            <div class="weui-cells__title">请勾选您已修读的课程</div>
+            <div class="weui-cells" id="courseList">
+                <!-- 课程列表将通过JS动态生成 -->
+            </div>
+
+            <div class="weui-btn-area">
+                <button class="weui-btn weui-btn_primary" id="submitBtn">提交</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content" id="toastMsg">操作成功</p>
+        </div>
+    </div>
+
+    <div id="loadingToast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">加载中</p>
+        </div>
+    </div>
+
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "lockfileVersion": 1,
+  "dependencies": {
+    "file-saver": "^2.0.5",
+    "jszip": "^3.5.0",
+    "typescript": "^4.1.2",
+    "wx-server-sdk": "^2.3.2"
+  }
+}

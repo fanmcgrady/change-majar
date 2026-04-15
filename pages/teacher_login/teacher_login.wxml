@@ -1,0 +1,36 @@
+<!--index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="content">教师登录</view>
+</cu-custom>
+<view class="user-container" style="background-image: url('https://halo-1259052167.cos.ap-chengdu.myqcloud.com/img/cao.jpg');background-size:cover;opacity:{{1}};width:{{ScreenTotalW}}rpx;height:1182rpx;">
+  <view class=" flex align-center">
+    <view class="flex-sub text-center">
+  <view class=" padding-lr">
+  <view class="solids-bottom padding-xs flex align-center">
+    <view class="flex-sub text-center">
+      <view class="solid-bottom text-xsl padding">
+        <text class=" cuIcon-group_fill text-white"></text>
+      </view>
+      <text class="text-bold text-xl text-white text-shadow">转专业小程序    教师端登陆</text>
+    </view>
+ 
+  </view>
+ <view class="padding-xl radius shadow margin-top">
+  <view class="denglu">
+  <view class="cu-form-group margin-top" >
+		<view class="title round" style="font-weight:bolder;">工号：</view>
+		<input bindinput="inputName" placeholder="请输入您的工号"></input>
+	</view>
+	<view class="cu-form-group ">
+		<view class="title round" style="font-weight:bolder;">密码：</view>
+		<input bindinput="inputPassword" placeholder="请输入您的密码" password></input>
+  </view>
+  </view>
+  </view>
+  <view class="padding flex flex-direction">
+  <button class="cu-btn round block line-white text-bold lg margin-tb-sm bordersize shadow" bindtap="bindViewTap_login" style="font-weight:bolder;">登 录</button>
+</view>
+</view>
+</view>
+  </view>
+  </view>
