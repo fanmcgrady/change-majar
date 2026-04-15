@@ -23,6 +23,7 @@ async function exportData() {
 let currentPage = 1;
 let searchKeyword = '';
 let isLoading = false;
+let hasMore = true; // 新增：是否还有更多数据
 
 function showToast(msg) {
     const toast = document.getElementById('toast');
@@ -64,7 +65,7 @@ async function loadStatistics() {
 
 // 加载学生列表
 async function loadStudents(append = false) {
-    if (isLoading) return;
+    if (isLoading || (append && !hasMore)) return;
 
     try {
         isLoading = true;
@@ -72,6 +73,9 @@ async function loadStudents(append = false) {
 
         const result = await getStudents(currentPage, searchKeyword);
         hideLoading();
+
+        // 检查是否还有更多数据
+        hasMore = result.data.length >= result.per_page;
 
         const container = document.getElementById('studentList');
         if (!append) {
@@ -81,6 +85,12 @@ async function loadStudents(append = false) {
         if (result.data.length === 0) {
             if (!append) {
                 container.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">暂无数据</div>';
+            } else {
+                // 如果是追加且没有数据了，显示到底了
+                const noMoreDiv = document.createElement('div');
+                noMoreDiv.style.cssText = 'text-align: center; padding: 20px; color: #999; font-size: 14px;';
+                noMoreDiv.textContent = '没有更多数据了';
+                container.appendChild(noMoreDiv);
             }
             isLoading = false;
             return;
@@ -90,6 +100,14 @@ async function loadStudents(append = false) {
             const item = createStudentItem(student);
             container.appendChild(item);
         });
+
+        // 如果刚好加载完最后一页的数据，并且数量小于per_page
+        if (append && !hasMore && result.data.length > 0) {
+            const noMoreDiv = document.createElement('div');
+            noMoreDiv.style.cssText = 'text-align: center; padding: 20px; color: #999; font-size: 14px;';
+            noMoreDiv.textContent = '没有更多数据了';
+            container.appendChild(noMoreDiv);
+        }
 
         isLoading = false;
     } catch (err) {
@@ -227,6 +245,7 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
     searchTimer = setTimeout(() => {
         searchKeyword = e.target.value.trim();
         currentPage = 1;
+        hasMore = true; // 新增：重置 hasMore
         loadStudents(false);
     }, 500);
 });
@@ -247,13 +266,14 @@ document.getElementById('logoutBtn').addEventListener('click', () => {
 
 // 滚动加载更多
 window.addEventListener('scroll', () => {
-    if (isLoading) return;
+    if (isLoading || !hasMore) return; // 新增：如果正在加载或没有更多数据，则不执行
 
     const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
     const clientHeight = document.documentElement.clientHeight || window.innerHeight;
 
-    if (scrollTop + clientHeight >= scrollHeight - 100) {
+    // 当距离底部小于 50px 时触发加载
+    if (scrollTop + clientHeight >= scrollHeight - 50) {
         currentPage++;
         loadStudents(true);
     }
