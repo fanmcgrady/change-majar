@@ -1,4 +1,8 @@
-const API_BASE = '/api';
+// 自动检测 API 基础路径
+// 如果 URL 包含 /change-major，则添加该前缀
+const pathPrefix = window.location.pathname.includes('/change-major') ? '/change-major' : '';
+const API_BASE = pathPrefix + '/api';
+console.log('API_BASE:', API_BASE);
 
 // Token 管理（仅用于管理员）
 function getToken() {
