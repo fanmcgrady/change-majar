@@ -157,6 +157,9 @@ async function showStudentDetail(openid) {
 
         let attachmentHtml = '';
         if (attachments.length > 0) {
+            // 获取路径前缀
+            const pathPrefix = window.location.pathname.includes('/change-major') ? '/change-major' : '';
+
             attachmentHtml = '<div style="margin-top: 15px;"><strong>附件预览:</strong>';
             attachments.forEach(att => {
                 const typeNames = {
@@ -165,7 +168,7 @@ async function showStudentDetail(openid) {
                     'other': '其他证明材料'
                 };
                 const typeName = typeNames[att.file_type] || att.file_type;
-                const fileUrl = `/uploads/${att.file_path}`;
+                const fileUrl = `${pathPrefix}/uploads/${att.file_path}`;
                 // 判断文件类型：优先用 file_name，如果 file_name 是 'pdf' 这种没有后缀的，则用 file_name 本身
                 const fileExt = att.file_name.includes('.') ? att.file_name.split('.').pop().toLowerCase() : att.file_name.toLowerCase();
 
