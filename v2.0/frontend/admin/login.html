@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+    <script>
+        // 自动计算 base 路径，解决子目录部署的静态资源 404 问题
+        var basePath = window.location.pathname;
+        if (!basePath.endsWith("/")) {
+            var pathParts = basePath.split("/");
+            if (pathParts[pathParts.length - 1].indexOf(".") === -1) {
+                // 访问的是目录但没带斜杠，如 /change-major
+                window.location.replace(basePath + "/" + window.location.search);
+            }
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理员登录</title>
