@@ -3,13 +3,38 @@ from db import get_db
 from middleware.auth import admin_required
 import csv
 import io
+import json
 
 admin_bp = Blueprint('admin', __name__)
+
+COURSE_NAMES = {
+    1: '思想道德与法治', 2: '通用英语I-1/通用英语II-1', 3: '体育-1', 4: '新生研讨课',
+    5: '大学生心理健康', 6: '微积分（Ⅰ）-1', 7: '计算机系统及人工智能导论', 8: '程序设计基础',
+    9: '国家安全教育', 10: '离散数学', 11: '军事技能', 12: '线性代数（理工）',
+    13: '中国近现代史纲要', 14: '通用英语I-2/通用英语II-2', 15: '体育-2', 16: '军事理论',
+    17: '微积分（Ⅰ）-2', 18: '工程训练（Ⅰ）', 19: '数据结构与算法', 20: '网络安全管理与法律法规',
+    21: '中共党史/社会主义发展史/改革开放史/新中国史/中华民族发展史'
+}
+
+COURSE_CREDITS = {
+    1: 3, 2: 2, 3: 1, 4: 1, 5: 1, 6: 5, 7: 2.5, 8: 4, 9: 1, 10: 2.5,
+    11: 2, 12: 3, 13: 3, 14: 2, 15: 1, 16: 2, 17: 4, 18: 2, 19: 3, 20: 1, 21: 2
+}
+
+TOTAL_CREDITS = sum(COURSE_CREDITS.values())
+
+def calc_percentage(selected_courses_json):
+    try:
+        selected = json.loads(selected_courses_json)
+        selected_credits = sum(COURSE_CREDITS.get(cid, 0) for cid in selected)
+        return round((selected_credits / TOTAL_CREDITS) * 100, 1)
+    except:
+        return 0
 
 @admin_bp.route('/students', methods=['GET'])
 @admin_required
 def get_all_students():
-    """获取所有学生信息"""
+    """获取所有学生信息列表（每条记录独立显示）"""
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
     search = request.args.get('search', '')
@@ -17,7 +42,6 @@ def get_all_students():
     conn = get_db()
     cursor = conn.cursor()
 
-    # 构建查询
     query = 'SELECT * FROM student_info WHERE 1=1'
     params = []
 
@@ -26,12 +50,10 @@ def get_all_students():
         search_param = f'%{search}%'
         params.extend([search_param, search_param, search_param])
 
-    # 获取总数
     count_query = query.replace('SELECT *', 'SELECT COUNT(*)')
     cursor.execute(count_query, params)
     total = cursor.fetchone()[0]
 
-    # 分页查询
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?'
     params.extend([per_page, (page - 1) * per_page])
 
@@ -46,54 +68,45 @@ def get_all_students():
         'data': [dict(s) for s in students]
     })
 
-@admin_bp.route('/student/<openid>', methods=['GET'])
+@admin_bp.route('/student/<int:record_id>', methods=['GET'])
 @admin_required
-def get_student_detail(openid):
-    """获取学生详细信息（包括附件和课程调查）"""
+def get_student_detail(record_id):
+    """获取单条提交记录详情"""
     conn = get_db()
     cursor = conn.cursor()
 
-    # 获取学生信息
-    cursor.execute('SELECT * FROM student_info WHERE openid = ?', (openid,))
+    cursor.execute('SELECT * FROM student_info WHERE id = ?', (record_id,))
     student = cursor.fetchone()
 
     if not student:
         conn.close()
-        return jsonify({'error': '学生不存在'}), 404
+        return jsonify({'error': '记录不存在'}), 404
 
-    # 获取附件
-    cursor.execute('SELECT * FROM attachments WHERE openid = ?', (openid,))
+    student_id = student['student_id']
+
+    # 获取该条记录对应的课程调查
+    cursor.execute('SELECT * FROM course_survey WHERE record_id = ?', (record_id,))
+    survey = cursor.fetchone()
+
+    # 获取该学号所有附件
+    cursor.execute('SELECT * FROM attachments WHERE student_id = ? ORDER BY created_at DESC', (student_id,))
     attachments = cursor.fetchall()
 
-    # 获取课程调查
-    cursor.execute('SELECT * FROM course_survey WHERE openid = ?', (openid,))
-    course_survey = cursor.fetchone()
-
-    # 计算课程完成百分比
-    course_percentage = 0
-    selected_courses_list = []
-    if course_survey:
-        import json
-        selected_courses_list = json.loads(course_survey['selected_courses'])
-        # 总学分
-        total_credits = 23 + 2 + 1 + 1 + 1 + 5 + 2.5 + 4 + 1 + 2.5 + 2 + 3 + 3 + 2 + 1 + 2 + 4 + 2 + 3 + 1 + 2  # 所有课程学分总和
-        # 已选课程学分
-        course_credits = {
-            1: 3, 2: 2, 3: 1, 4: 1, 5: 1, 6: 5, 7: 2.5, 8: 4, 9: 1, 10: 2.5,
-            11: 2, 12: 3, 13: 3, 14: 2, 15: 1, 16: 2, 17: 4, 18: 2, 19: 3, 20: 1, 21: 2
-        }
-        selected_credits = sum(course_credits.get(cid, 0) for cid in selected_courses_list)
-        course_percentage = round((selected_credits / total_credits) * 100, 1)
-
     conn.close()
+
+    course_survey_data = None
+    if survey:
+        selected_courses = json.loads(survey['selected_courses'])
+        percentage = calc_percentage(survey['selected_courses'])
+        course_survey_data = {
+            'selected_courses': selected_courses,
+            'percentage': percentage
+        }
 
     return jsonify({
         'student': dict(student),
         'attachments': [dict(a) for a in attachments],
-        'course_survey': {
-            'selected_courses': selected_courses_list,
-            'percentage': course_percentage
-        } if course_survey else None
+        'course_survey': course_survey_data
     })
 
 @admin_bp.route('/export', methods=['GET'])
@@ -106,29 +119,23 @@ def export_students():
     students = cursor.fetchall()
     conn.close()
 
-    # 创建CSV
     output = io.StringIO()
     writer = csv.writer(output)
 
-    # 写入表头
     writer.writerow(['姓名', '性别', '学号', '电话', '原学院', '原专业',
-                     '四级成绩', '必修绩点', '是否降级', '毕业选择', '是否读博',
-                     '是否提交', '创建时间', '更新时间'])
+                     '四级成绩', '必修绩点', '是否降级', '毕业选择', '是否读博', '提交时间'])
 
-    # 写入数据
     for student in students:
         writer.writerow([
             student['name'], student['sex'], student['student_id'],
             student['phone'], student['college'], student['major'],
             student['cet4'], student['gpa'], student['downgrade'],
-            student['choice'], student['phd'],
-            '是' if student['is_submitted'] else '否',
-            student['created_at'], student['updated_at']
+            student['choice'], student['phd'], student['created_at']
         ])
 
     output.seek(0)
     return output.getvalue(), 200, {
-        'Content-Type': 'text/csv; charset=utf-8',
+        'Content-Type': 'text/csv; charset=utf-8-sig',
         'Content-Disposition': 'attachment; filename=students.csv'
     }
 
@@ -139,19 +146,15 @@ def get_statistics():
     conn = get_db()
     cursor = conn.cursor()
 
-    # 总人数
     cursor.execute('SELECT COUNT(*) FROM student_info')
     total = cursor.fetchone()[0]
 
-    # 已提交人数
-    cursor.execute('SELECT COUNT(*) FROM student_info WHERE is_submitted = 1')
-    submitted = cursor.fetchone()[0]
+    cursor.execute('SELECT COUNT(DISTINCT student_id) FROM student_info')
+    unique_students = cursor.fetchone()[0]
 
-    # 按学院统计
     cursor.execute('SELECT college, COUNT(*) as count FROM student_info GROUP BY college')
     by_college = [{'college': row[0], 'count': row[1]} for row in cursor.fetchall()]
 
-    # 按毕业选择统计
     cursor.execute('SELECT choice, COUNT(*) as count FROM student_info GROUP BY choice')
     by_choice = [{'choice': row[0], 'count': row[1]} for row in cursor.fetchall()]
 
@@ -159,7 +162,8 @@ def get_statistics():
 
     return jsonify({
         'total': total,
-        'submitted': submitted,
+        'submitted': total,
+        'unique_students': unique_students,
         'by_college': by_college,
         'by_choice': by_choice
     })

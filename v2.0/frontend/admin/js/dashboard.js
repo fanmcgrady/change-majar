@@ -5,8 +5,8 @@ async function getStudents(page = 1, search = '') {
     return request(`/admin/students?${params}`);
 }
 
-async function getStudentDetail(openid) {
-    return request(`/admin/student/${openid}`);
+async function getStudentDetail(recordId) {
+    return request(`/admin/student/${recordId}`);
 }
 
 async function getStatistics() {
@@ -106,21 +106,18 @@ async function loadStudents(append = false) {
 function createStudentItem(student) {
     const div = document.createElement('div');
     div.className = 'student-item';
-    div.onclick = () => showStudentDetail(student.openid);
-
-    const statusBadge = student.is_submitted
-        ? '<span class="badge badge-success">已提交</span>'
-        : '<span class="badge badge-warning">未提交</span>';
+    div.onclick = () => showStudentDetail(student.id);
 
     div.innerHTML = `
         <div class="student-name">
-            ${student.name} ${statusBadge}
+            ${student.name} <span class="badge badge-success">已提交</span>
         </div>
         <div class="student-info">
             学号: ${student.student_id}<br>
             学院: ${student.college} | 专业: ${student.major}<br>
             电话: ${student.phone}<br>
-            四级: ${student.cet4 || '-'} | 绩点: ${student.gpa || '-'}
+            四级: ${student.cet4 || '-'} | 绩点: ${student.gpa || '-'}<br>
+            提交时间: ${student.created_at}
         </div>
     `;
 

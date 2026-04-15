@@ -26,21 +26,11 @@ const courses = [
     { id: 18, name: '工程训练（Ⅰ）', code: '905006020', credit: 2, college: '工程训练中心', semester: '1春' },
     { id: 19, name: '数据结构与算法', code: '314092030', credit: 3, college: '网络空间安全学院', semester: '1春' },
     { id: 20, name: '网络安全管理与法律法规', code: '314034010', credit: 1, college: '网络空间安全学院', semester: '1春' },
-    { id: 21, name: '中共党史/社会主义发展史/改革开放史/新中国史/中华民族发展史', code: '107418020/107419020/102620020/106812020/106844020', credit: 2, college: '马克思主义学院/马克思主义学院/经济学院/历史文化学院/历史文化学院', semester: '1春' }
+    { id: 21, name: '中共党史/社会主义发展史/改革开放史/新中国史/中华民族发展史', code: '107418020/107419020/102620020/106812020/106844020', credit: 2, college: '马克思主义学院', semester: '1春' }
 ];
 
 let selectedCourses = [];
 let isSubmitted = false;
-
-// 显示调试信息
-function showDebugInfo(info) {
-    const debugDiv = document.getElementById('debugInfo');
-    const debugContent = document.getElementById('debugContent');
-    if (debugDiv && debugContent) {
-        debugDiv.style.display = 'block';
-        debugContent.innerHTML = info;
-    }
-}
 
 // 显示提示
 function showToast(msg, duration = 2000) {
@@ -63,152 +53,65 @@ function hideLoading() {
     document.getElementById('loadingToast').style.display = 'none';
 }
 
-// 开发模式配置
-const DEV_MODE = false; // 开发环境设为 true，生产环境设为 false
-const DEV_OPENID = 'test_openid_123'; // 测试用的 openid
-
-// 初始化微信JS-SDK
-function initWechat() {
-    // 开发模式：跳过微信登录
-    if (DEV_MODE) {
-        if (!getToken()) {
-            // 模拟登录，生成测试 token
-            showLoading();
-            // 直接调用后端登录接口，使用测试 openid
-            fetch('/api/auth/wechat-login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code: 'dev_mode', openid: DEV_OPENID })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.token) {
-                    setToken(data.token);
-                    hideLoading();
-                    loadStudentInfo();
-                } else {
-                    throw new Error('登录失败');
-                }
-            })
-            .catch(err => {
-                hideLoading();
-                showToast('开发模式登录失败: ' + err.message);
-            });
-        } else {
-            loadStudentInfo();
-        }
-        return;
-    }
-
-    // 生产模式：正常微信登录流程
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-
-    if (code && !getToken()) {
-        // 使用code登录
-        showLoading();
-        wechatLogin(code)
-            .then(data => {
-                setToken(data.token);
-                hideLoading();
-                loadStudentInfo();
-                // 清除URL中的code参数
-                window.history.replaceState({}, document.title, window.location.pathname);
-            })
-            .catch(err => {
-                hideLoading();
-                // 显示错误信息和当前URL
-                const debugInfo = `
-                    <p><strong>错误：</strong>${err.message}</p>
-                    <p><strong>当前URL：</strong><br>${window.location.href}</p>
-                    <p><strong>Code参数：</strong>${code}</p>
-                `;
-                showDebugInfo(debugInfo);
-                showToast('登录失败，请查看页面顶部调试信息');
-            });
-    } else if (getToken()) {
-        // 已有token，直接加载数据
-        loadStudentInfo();
-    } else {
-        // 跳转到微信授权页面
-        const appid = 'wxa4be31314a5d84be'; // 微信appid
-        const redirect_uri = encodeURIComponent(window.location.href);
-        const authUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`;
-
-        // 显示调试信息
-        const debugInfo = `
-            <p><strong>准备跳转微信授权</strong></p>
-            <p><strong>当前URL：</strong><br>${window.location.href}</p>
-            <p><strong>redirect_uri：</strong><br>${redirect_uri}</p>
-            <p><strong>授权URL：</strong><br>${authUrl}</p>
-        `;
-        showDebugInfo(debugInfo);
-
-        console.log('准备跳转微信授权');
-        console.log('当前URL:', window.location.href);
-        console.log('redirect_uri:', redirect_uri);
-        console.log('授权URL:', authUrl);
-
-        // 延迟3秒跳转，让用户看到调试信息
-        setTimeout(() => {
-            window.location.href = authUrl;
-        }, 3000);
-    }
+// 获取当前学号
+function getStudentId() {
+    return document.getElementById('student_id').value.trim();
 }
 
-// 加载学生信息
-async function loadStudentInfo() {
+// 根据学号加载已有数据
+async function loadByStudentId() {
+    const studentId = getStudentId();
+    if (!studentId) return;
+
     try {
         showLoading();
-        const result = await getStudentInfo();
+        const response = await fetch(`/api/student/info?student_id=${studentId}`);
+        const result = await response.json();
+        hideLoading();
 
         if (result.exists) {
             fillForm(result.data);
             isSubmitted = result.data.is_submitted === 1;
+            updateSubmitButton();
+
+            // 加载课程调查
+            if (result.survey && result.survey.selected_courses) {
+                selectedCourses = JSON.parse(result.survey.selected_courses);
+            }
+            renderCourses();
+
+            // 加载附件
+            loadFiles(studentId);
         }
-
-        // 加载课程调查
-        await loadCourseSurvey();
-
-        // 加载已上传的文件
-        loadFiles();
-
-        // 更新按钮文字
-        updateSubmitButton();
-
-        hideLoading();
     } catch (err) {
         hideLoading();
-        // 如果是token错误，在开发模式下重新登录
-        if (DEV_MODE && (err.message.includes('token') || err.message.includes('非JSON'))) {
-            localStorage.removeItem('token');
-            location.reload();
-            return;
-        }
-        showToast('加载失败: ' + err.message);
+        console.error('加载失败:', err);
     }
 }
 
-// 加载课程调查
-async function loadCourseSurvey() {
+// 加载文件列表
+async function loadFiles(studentId) {
     try {
-        const response = await fetch('/api/student/course-survey', {
-            headers: {
-                'Authorization': `Bearer ${getToken()}`
+        const result = await getFiles(studentId);
+
+        uploadedFiles = { transcript: [], cet4_certificate: [], other: [] };
+
+        result.files.forEach(f => {
+            const fileType = f.file_type || 'other';
+            if (uploadedFiles[fileType]) {
+                uploadedFiles[fileType].push({
+                    id: f.id,
+                    name: f.file_name,
+                    path: `/uploads/${f.file_path}`
+                });
             }
         });
 
-        if (response.ok) {
-            const result = await response.json();
-            if (result.exists && result.data.selected_courses) {
-                selectedCourses = JSON.parse(result.data.selected_courses);
-            }
-        }
-
-        renderCourses();
+        renderFiles('transcript', 'transcriptFiles', 'transcript-count');
+        renderFiles('cet4_certificate', 'cet4Files', 'cet4-count');
+        renderFiles('other', 'otherFiles', 'other-count');
     } catch (err) {
-        console.error('加载课程调查失败:', err);
-        renderCourses();
+        console.error('加载文件失败:', err);
     }
 }
 
@@ -239,9 +142,7 @@ function renderCourses() {
         const checkbox = div.querySelector('input');
         checkbox.addEventListener('change', (e) => {
             if (e.target.checked) {
-                if (!selectedCourses.includes(course.id)) {
-                    selectedCourses.push(course.id);
-                }
+                if (!selectedCourses.includes(course.id)) selectedCourses.push(course.id);
             } else {
                 selectedCourses = selectedCourses.filter(id => id !== course.id);
             }
@@ -262,7 +163,6 @@ function updateCourseProgress() {
         .reduce((sum, c) => sum + c.credit, 0);
     const percentage = Math.round((selectedCredits / totalCredits) * 100);
 
-    // 更新进度条
     const progressBar = document.getElementById('courseProgressBar');
     const percentageText = document.getElementById('coursePercentage');
 
@@ -270,14 +170,13 @@ function updateCourseProgress() {
         progressBar.style.width = percentage + '%';
         percentageText.textContent = percentage + '%';
 
-        // 根据百分比改变颜色
         let color;
         if (percentage < 50) {
-            color = '#e64340'; // 红色
+            color = '#e64340';
         } else if (percentage < 70) {
-            color = '#ffa500'; // 橙色
+            color = '#ffa500';
         } else {
-            color = '#1aad19'; // 绿色
+            color = '#1aad19';
         }
 
         progressBar.style.background = color;
@@ -331,49 +230,21 @@ function getFormData() {
 
 // 验证表单
 function validateForm(data) {
-    if (!data.name) {
-        showToast('请输入姓名');
-        return false;
-    }
-    if (!data.sex) {
-        showToast('请选择性别');
-        return false;
-    }
-    if (!data.student_id) {
-        showToast('请输入学号');
-        return false;
-    }
-    if (!data.phone) {
-        showToast('请输入电话');
-        return false;
-    }
-    if (!data.college) {
-        showToast('请输入原学院');
-        return false;
-    }
-    if (!data.major) {
-        showToast('请输入原专业');
-        return false;
-    }
-    if (!data.cet4) {
-        showToast('请输入四级成绩');
-        return false;
-    }
-    if (!data.gpa) {
-        showToast('请输入必修绩点');
-        return false;
-    }
-    if (!data.downgrade) {
-        showToast('请选择是否同意降级');
-        return false;
-    }
-    if (!data.choice) {
-        showToast('请选择毕业选择');
-        return false;
-    }
-    if (!data.phd) {
-        showToast('请选择是否攻读博士');
-        return false;
+    const checks = [
+        [!data.name, '请输入姓名'],
+        [!data.sex, '请选择性别'],
+        [!data.student_id, '请输入学号'],
+        [!data.phone, '请输入电话'],
+        [!data.college, '请输入原学院'],
+        [!data.major, '请输入原专业'],
+        [!data.cet4, '请输入四级成绩'],
+        [!data.gpa, '请输入必修绩点'],
+        [!data.downgrade, '请选择是否同意降级'],
+        [!data.choice, '请选择毕业选择'],
+        [!data.phd, '请选择是否攻读博士'],
+    ];
+    for (const [condition, msg] of checks) {
+        if (condition) { showToast(msg); return false; }
     }
     return true;
 }
@@ -383,17 +254,14 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
     const data = getFormData();
     if (!validateForm(data)) return;
 
-    // 验证必填附件
     if (uploadedFiles.transcript.length === 0) {
         showToast('请上传可信电子成绩单');
         return;
     }
-
     if (uploadedFiles.cet4_certificate.length === 0) {
         showToast('请上传四级考试成绩单');
         return;
     }
-
     if (selectedCourses.length === 0) {
         showToast('请至少选择一门课程');
         return;
@@ -404,25 +272,7 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
 
     try {
         showLoading();
-        // 保存基本信息
-        await saveStudentInfo(data);
-        // 保存课程调查
-        const response = await fetch('/api/student/course-survey', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getToken()}`
-            },
-            body: JSON.stringify({
-                selected_courses: JSON.stringify(selectedCourses)
-            })
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || '提交失败');
-        }
-
+        await saveStudentInfo({ ...data, selected_courses: JSON.stringify(selectedCourses) });
         hideLoading();
         showToast(isSubmitted ? '修改成功' : '提交成功');
         isSubmitted = true;
@@ -433,37 +283,40 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
     }
 });
 
-// 文件上传 - 可信电子成绩单
+// 学号失去焦点时加载已有数据
+document.getElementById('student_id').addEventListener('blur', () => {
+    loadByStudentId();
+});
+
+// 文件上传
 document.getElementById('transcriptInput').addEventListener('change', async (e) => {
     await handleFileUpload(e, 'transcript', 'transcriptFiles', 'transcript-count', 1);
 });
-
-// 文件上传 - 四级考试成绩单
 document.getElementById('cet4Input').addEventListener('change', async (e) => {
     await handleFileUpload(e, 'cet4_certificate', 'cet4Files', 'cet4-count', 1);
 });
-
-// 文件上传 - 其他证明材料
 document.getElementById('otherInput').addEventListener('change', async (e) => {
     await handleFileUpload(e, 'other', 'otherFiles', 'other-count', 1);
 });
 
-// 统一的文件上传处理函数
 async function handleFileUpload(e, fileType, containerId, countId, maxFiles) {
     const files = Array.from(e.target.files);
-
     if (files.length === 0) return;
 
-    // 检查是否已达到上传限制
+    const studentId = getStudentId();
+    if (!studentId) {
+        showToast('请先填写学号');
+        e.target.value = '';
+        return;
+    }
+
     if (uploadedFiles[fileType].length >= maxFiles) {
         showToast(`${getFileTypeName(fileType)}最多上传${maxFiles}个文件，请先删除已有文件`);
         e.target.value = '';
         return;
     }
 
-    const file = files[0]; // 只取第一个文件
-
-    // 验证文件格式
+    const file = files[0];
     if (!file.name.toLowerCase().endsWith('.pdf')) {
         showToast('只能上传PDF格式文件');
         e.target.value = '';
@@ -472,7 +325,7 @@ async function handleFileUpload(e, fileType, containerId, countId, maxFiles) {
 
     try {
         showLoading();
-        const result = await uploadFile(file, fileType);
+        const result = await uploadFile(file, fileType, studentId);
         hideLoading();
 
         uploadedFiles[fileType].push({
@@ -485,20 +338,12 @@ async function handleFileUpload(e, fileType, containerId, countId, maxFiles) {
         showToast('上传成功');
     } catch (err) {
         hideLoading();
-        // 如果是token错误，在开发模式下重新登录
-        if (DEV_MODE && (err.message.includes('token') || err.message.includes('非JSON'))) {
-            showToast('登录已过期，正在重新登录...');
-            localStorage.removeItem('token');
-            setTimeout(() => location.reload(), 1500);
-            return;
-        }
         showToast('上传失败: ' + err.message);
     }
 
     e.target.value = '';
 }
 
-// 获取文件类型名称
 function getFileTypeName(fileType) {
     const names = {
         'transcript': '可信电子成绩单',
@@ -506,37 +351,6 @@ function getFileTypeName(fileType) {
         'other': '其他证明材料'
     };
     return names[fileType] || '文件';
-}
-
-// 加载文件列表
-async function loadFiles() {
-    try {
-        const result = await getFiles();
-
-        // 按类型分组
-        uploadedFiles = {
-            transcript: [],
-            cet4_certificate: [],
-            other: []
-        };
-
-        result.files.forEach(f => {
-            const fileType = f.file_type || 'other';
-            if (uploadedFiles[fileType]) {
-                uploadedFiles[fileType].push({
-                    id: f.id,
-                    name: f.file_name,
-                    path: `/uploads/${f.file_path}`
-                });
-            }
-        });
-
-        renderFiles('transcript', 'transcriptFiles', 'transcript-count');
-        renderFiles('cet4_certificate', 'cet4Files', 'cet4-count');
-        renderFiles('other', 'otherFiles', 'other-count');
-    } catch (err) {
-        console.error('加载文件失败:', err);
-    }
 }
 
 // 渲染文件列表
@@ -548,9 +362,6 @@ function renderFiles(fileType, containerId, countId) {
     files.forEach(file => {
         const li = document.createElement('li');
         li.className = 'weui-uploader__file';
-        li.style.backgroundSize = 'contain';
-        li.style.backgroundRepeat = 'no-repeat';
-        li.style.backgroundPosition = 'center';
         li.innerHTML = '<div style="padding: 10px; font-size: 12px; text-align: center;">PDF</div>';
 
         const deleteBtn = document.createElement('span');
@@ -582,7 +393,7 @@ async function deleteFileHandler(fileId, fileType, containerId, countId) {
     }
 }
 
-// 页面加载完成后初始化
+// 页面加载时初始化课程列表
 document.addEventListener('DOMContentLoaded', () => {
-    initWechat();
+    renderCourses();
 });

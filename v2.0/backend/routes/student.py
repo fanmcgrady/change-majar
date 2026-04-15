@@ -1,27 +1,26 @@
 from flask import Blueprint, request, jsonify
-from werkzeug.utils import secure_filename
-import os
-from datetime import datetime
 from db import get_db
-from middleware.auth import token_required
+import json
 
 student_bp = Blueprint('student', __name__)
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 @student_bp.route('/info', methods=['GET'])
-@token_required
 def get_student_info():
-    """获取学生信息"""
-    openid = request.openid
+    """根据学号获取学生信息（取最新一条）"""
+    student_id = request.args.get('student_id')
+    if not student_id:
+        return jsonify({'exists': False})
 
     conn = get_db()
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM student_info WHERE openid = ?', (openid,))
+    cursor.execute('SELECT * FROM student_info WHERE student_id = ? ORDER BY created_at DESC LIMIT 1', (student_id,))
     info = cursor.fetchone()
+
+    survey = None
+    if info:
+        cursor.execute('SELECT * FROM course_survey WHERE student_id = ? ORDER BY created_at DESC LIMIT 1', (student_id,))
+        survey = cursor.fetchone()
+
     conn.close()
 
     if not info:
@@ -29,14 +28,13 @@ def get_student_info():
 
     return jsonify({
         'exists': True,
-        'data': dict(info)
+        'data': dict(info),
+        'survey': dict(survey) if survey else None
     })
 
 @student_bp.route('/info', methods=['POST'])
-@token_required
 def save_student_info():
-    """保存或更新学生信息"""
-    openid = request.openid
+    """保存学生信息（每次都新增一条记录）"""
     data = request.get_json()
 
     required_fields = ['name', 'student_id', 'phone', 'college', 'major']
@@ -44,118 +42,33 @@ def save_student_info():
         if not data.get(field):
             return jsonify({'error': f'缺少必填字段: {field}'}), 400
 
-    conn = get_db()
-    cursor = conn.cursor()
-
-    # 检查是否已存在
-    cursor.execute('SELECT id FROM student_info WHERE openid = ?', (openid,))
-    existing = cursor.fetchone()
-
-    if existing:
-        # 更新
-        cursor.execute('''
-            UPDATE student_info SET
-                name = ?, sex = ?, student_id = ?, phone = ?,
-                college = ?, major = ?, cet4 = ?, gpa = ?,
-                downgrade = ?, choice = ?, phd = ?,
-                updated_at = CURRENT_TIMESTAMP
-            WHERE openid = ?
-        ''', (
-            data['name'], data.get('sex'), data['student_id'], data['phone'],
-            data['college'], data['major'], data.get('cet4'), data.get('gpa'),
-            data.get('downgrade'), data.get('choice'), data.get('phd'),
-            openid
-        ))
-    else:
-        # 插入
-        cursor.execute('''
-            INSERT INTO student_info (
-                openid, name, sex, student_id, phone,
-                college, major, cet4, gpa,
-                downgrade, choice, phd
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (
-            openid, data['name'], data.get('sex'), data['student_id'], data['phone'],
-            data['college'], data['major'], data.get('cet4'), data.get('gpa'),
-            data.get('downgrade'), data.get('choice'), data.get('phd')
-        ))
-
-    conn.commit()
-    conn.close()
-
-    return jsonify({'message': '保存成功'})
-
-@student_bp.route('/submit', methods=['POST'])
-@token_required
-def submit_info():
-    """提交学生信息"""
-    openid = request.openid
-
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute('UPDATE student_info SET is_submitted = 1 WHERE openid = ?', (openid,))
-    conn.commit()
-    conn.close()
-
-    return jsonify({'message': '提交成功'})
-
-@student_bp.route('/course-survey', methods=['GET'])
-@token_required
-def get_course_survey():
-    """获取课程调查信息"""
-    openid = request.openid
-
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM course_survey WHERE openid = ?', (openid,))
-    survey = cursor.fetchone()
-    conn.close()
-
-    if not survey:
-        return jsonify({'exists': False})
-
-    return jsonify({
-        'exists': True,
-        'data': dict(survey)
-    })
-
-@student_bp.route('/course-survey', methods=['POST'])
-@token_required
-def save_course_survey():
-    """保存或更新课程调查"""
-    openid = request.openid
-    data = request.get_json()
-
     selected_courses = data.get('selected_courses')
-    if not selected_courses:
-        return jsonify({'error': '请选择至少一门课程'}), 400
 
     conn = get_db()
     cursor = conn.cursor()
 
-    # 检查是否已存在
-    cursor.execute('SELECT id FROM course_survey WHERE openid = ?', (openid,))
-    existing = cursor.fetchone()
+    # 每次都插入新记录
+    cursor.execute('''
+        INSERT INTO student_info (
+            student_id, name, sex, phone,
+            college, major, cet4, gpa,
+            downgrade, choice, phd, is_submitted
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+    ''', (
+        data['student_id'], data['name'], data.get('sex'), data['phone'],
+        data['college'], data['major'], data.get('cet4'), data.get('gpa'),
+        data.get('downgrade'), data.get('choice'), data.get('phd')
+    ))
+    record_id = cursor.lastrowid
 
-    if existing:
-        # 更新
+    # 保存课程调查
+    if selected_courses:
         cursor.execute('''
-            UPDATE course_survey SET
-                selected_courses = ?,
-                updated_at = CURRENT_TIMESTAMP
-            WHERE openid = ?
-        ''', (selected_courses, openid))
-    else:
-        # 插入
-        cursor.execute('''
-            INSERT INTO course_survey (openid, selected_courses)
-            VALUES (?, ?)
-        ''', (openid, selected_courses))
-
-    # 同时更新学生信息的提交状态
-    cursor.execute('UPDATE student_info SET is_submitted = 1 WHERE openid = ?', (openid,))
+            INSERT INTO course_survey (student_id, record_id, selected_courses)
+            VALUES (?, ?, ?)
+        ''', (data['student_id'], record_id, selected_courses))
 
     conn.commit()
     conn.close()
 
-    return jsonify({'message': '保存成功'})
+    return jsonify({'message': '提交成功', 'record_id': record_id})
