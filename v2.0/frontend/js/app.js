@@ -303,10 +303,10 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
     }
 });
 
-// 学号失去焦点时加载已有数据
-document.getElementById('student_id').addEventListener('blur', () => {
-    loadByStudentId();
-});
+// 移除学号失去焦点时加载数据的逻辑，直接允许继续填写
+// document.getElementById('student_id').addEventListener('blur', () => {
+//     loadByStudentId();
+// });
 
 // 文件上传
 document.getElementById('transcriptInput').addEventListener('change', async (e) => {
