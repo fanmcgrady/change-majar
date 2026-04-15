@@ -274,9 +274,29 @@ document.getElementById('submitBtn').addEventListener('click', async () => {
         showLoading();
         await saveStudentInfo({ ...data, selected_courses: JSON.stringify(selectedCourses) });
         hideLoading();
-        showToast(isSubmitted ? '修改成功' : '提交成功');
-        isSubmitted = true;
-        updateSubmitButton();
+
+        // 计算课程完成度
+        const totalCredits = courses.reduce((sum, c) => sum + c.credit, 0);
+        const selectedCredits = courses
+            .filter(c => selectedCourses.includes(c.id))
+            .reduce((sum, c) => sum + c.credit, 0);
+        const percentage = Math.round((selectedCredits / totalCredits) * 100);
+
+        // 保存提交数据到sessionStorage
+        const submissionData = {
+            ...data,
+            selected_courses: selectedCourses,
+            percentage: percentage,
+            files: [
+                ...uploadedFiles.transcript.map(f => ({ ...f, file_type: 'transcript' })),
+                ...uploadedFiles.cet4_certificate.map(f => ({ ...f, file_type: 'cet4_certificate' })),
+                ...uploadedFiles.other.map(f => ({ ...f, file_type: 'other' }))
+            ]
+        };
+        sessionStorage.setItem('submissionData', JSON.stringify(submissionData));
+
+        // 跳转到成功页面
+        window.location.href = 'success.html';
     } catch (err) {
         hideLoading();
         showToast('操作失败: ' + err.message);

@@ -1,11 +1,26 @@
 const API_BASE = '/api';
 
+// Token 管理（仅用于管理员）
+function getToken() {
+    return localStorage.getItem('token');
+}
+
+function setToken(token) {
+    localStorage.setItem('token', token);
+}
+
 // API请求封装
 async function request(url, options = {}) {
     const headers = {
         'Content-Type': 'application/json',
         ...options.headers
     };
+
+    // 如果有token，添加到请求头（用于管理员接口）
+    const token = getToken();
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const response = await fetch(`${API_BASE}${url}`, {
         ...options,
