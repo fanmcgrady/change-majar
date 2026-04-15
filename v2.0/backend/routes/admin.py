@@ -130,14 +130,25 @@ def export_students_zip():
         summary_output = io.StringIO()
         summary_writer = csv.writer(summary_output)
         summary_writer.writerow(['记录ID', '姓名', '性别', '学号', '电话', '原学院', '原专业',
-                         '四级成绩', '必修绩点', '是否降级', '毕业选择', '是否读博', '提交时间'])
+                         '四级成绩', '必修绩点', '是否降级', '毕业选择', '是否读博', '课程完成度', '已选课程', '提交时间'])
 
         for student in students:
+            # 获取课程调查信息
+            cursor.execute('SELECT * FROM course_survey WHERE record_id = ?', (student['id'],))
+            survey = cursor.fetchone()
+            percentage = ''
+            course_names_str = ''
+            if survey:
+                percentage = f"{calc_percentage(survey['selected_courses'])}%"
+                selected_courses = json.loads(survey['selected_courses'])
+                course_names = [COURSE_NAMES.get(cid, str(cid)) for cid in selected_courses]
+                course_names_str = '、'.join(course_names)
+
             summary_writer.writerow([
                 student['id'], student['name'], student['sex'], student['student_id'],
                 student['phone'], student['college'], student['major'],
                 student['cet4'], student['gpa'], student['downgrade'],
-                student['choice'], student['phd'], student['created_at']
+                student['choice'], student['phd'], percentage, course_names_str, student['created_at']
             ])
 
         # 将总汇总表写入 ZIP
@@ -233,14 +244,25 @@ def export_students():
     writer = csv.writer(output)
 
     writer.writerow(['姓名', '性别', '学号', '电话', '原学院', '原专业',
-                     '四级成绩', '必修绩点', '是否降级', '毕业选择', '是否读博', '提交时间'])
+                     '四级成绩', '必修绩点', '是否降级', '毕业选择', '是否读博', '课程完成度', '已选课程', '提交时间'])
 
     for student in students:
+        # 获取课程调查信息
+        cursor.execute('SELECT * FROM course_survey WHERE record_id = ?', (student['id'],))
+        survey = cursor.fetchone()
+        percentage = ''
+        course_names_str = ''
+        if survey:
+            percentage = f"{calc_percentage(survey['selected_courses'])}%"
+            selected_courses = json.loads(survey['selected_courses'])
+            course_names = [COURSE_NAMES.get(cid, str(cid)) for cid in selected_courses]
+            course_names_str = '、'.join(course_names)
+
         writer.writerow([
             student['name'], student['sex'], student['student_id'],
             student['phone'], student['college'], student['major'],
             student['cet4'], student['gpa'], student['downgrade'],
-            student['choice'], student['phd'], student['created_at']
+            student['choice'], student['phd'], percentage, course_names_str, student['created_at']
         ])
 
     output.seek(0)

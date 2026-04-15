@@ -30,7 +30,10 @@ def admin_required(f):
     """验证管理员token的装饰器"""
     @wraps(f)
     def decorated(*args, **kwargs):
+        # 优先从 Header 获取，其次从 URL 参数获取（用于导出等场景）
         token = request.headers.get('Authorization')
+        if not token:
+            token = request.args.get('token')
 
         if not token:
             return jsonify({'error': '缺少token'}), 401

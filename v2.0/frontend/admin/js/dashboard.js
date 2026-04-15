@@ -157,7 +157,7 @@ async function showStudentDetail(openid) {
 
         let attachmentHtml = '';
         if (attachments.length > 0) {
-            attachmentHtml = '<div style="margin-top: 10px;"><strong>附件:</strong><br>';
+            attachmentHtml = '<div style="margin-top: 15px;"><strong>附件预览:</strong>';
             attachments.forEach(att => {
                 const typeNames = {
                     'transcript': '可信电子成绩单',
@@ -165,8 +165,22 @@ async function showStudentDetail(openid) {
                     'other': '其他证明材料'
                 };
                 const typeName = typeNames[att.file_type] || att.file_type;
-                // 使用原始文件名作为下载文件名
-                attachmentHtml += `<a href="/uploads/${att.file_path}" target="_blank" download="${att.file_name}" style="display: block; margin: 5px 0;">${typeName}: ${att.file_name}</a>`;
+                const fileUrl = `/uploads/${att.file_path}`;
+                // 判断文件类型：优先用 file_name，如果 file_name 是 'pdf' 这种没有后缀的，则用 file_name 本身
+                const fileExt = att.file_name.includes('.') ? att.file_name.split('.').pop().toLowerCase() : att.file_name.toLowerCase();
+
+                attachmentHtml += `<div class="attachment-preview">`;
+                attachmentHtml += `<h4>${typeName} <a href="${fileUrl}" target="_blank" download="${att.file_name}.pdf" style="font-size: 12px; color: #1aad19;">[下载]</a></h4>`;
+
+                if (fileExt === 'pdf') {
+                    attachmentHtml += `<iframe src="${fileUrl}" class="pdf-preview" frameborder="0"></iframe>`;
+                } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileExt)) {
+                    attachmentHtml += `<img src="${fileUrl}" class="image-preview" alt="${att.file_name}">`;
+                } else {
+                    attachmentHtml += `<p style="color: #999;">不支持预览此文件类型，请下载查看</p>`;
+                }
+
+                attachmentHtml += `</div>`;
             });
             attachmentHtml += '</div>';
         }
@@ -227,11 +241,11 @@ function showDialog(title, content) {
     const dialog = document.createElement('div');
     dialog.innerHTML = `
         <div class="weui-mask" onclick="this.parentElement.remove()"></div>
-        <div class="weui-dialog">
+        <div class="weui-dialog admin-detail-dialog">
             <div class="weui-dialog__hd"><strong class="weui-dialog__title">${title}</strong></div>
             <div class="weui-dialog__bd">${content}</div>
             <div class="weui-dialog__ft">
-                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" onclick="this.parentElement.parentElement.parentElement.remove()">确定</a>
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary" onclick="this.parentElement.parentElement.parentElement.remove()">关闭</a>
             </div>
         </div>
     `;
