@@ -15,7 +15,9 @@ async function getStatistics() {
 
 async function exportData() {
     const token = getToken();
-    window.open(`/api/admin/export?token=${token}`, '_blank');
+    // 使用新的一键打包ZIP接口，如果不带子路径会通过 api.js 逻辑处理
+    const prefix = window.location.pathname.includes('/change-major') ? '/change-major' : '';
+    window.open(`${prefix}/api/admin/export/zip?token=${token}`, '_blank');
 }
 
 let currentPage = 1;

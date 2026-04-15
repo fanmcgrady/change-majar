@@ -109,6 +109,116 @@ def get_student_detail(record_id):
         'course_survey': course_survey_data
     })
 
+import os
+import zipfile
+
+@admin_bp.route('/export/zip', methods=['GET'])
+@admin_required
+def export_students_zip():
+    """导出学生信息和附件为 ZIP 包（每个人一个文件夹）"""
+    conn = get_db()
+    cursor = conn.cursor()
+
+    # 获取所有提交记录
+    cursor.execute('SELECT * FROM student_info ORDER BY created_at DESC')
+    students = cursor.fetchall()
+
+    # 在内存中创建 ZIP 文件
+    memory_file = io.BytesIO()
+    with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
+        # 1. 创建总汇总表
+        summary_output = io.StringIO()
+        summary_writer = csv.writer(summary_output)
+        summary_writer.writerow(['记录ID', '姓名', '性别', '学号', '电话', '原学院', '原专业',
+                         '四级成绩', '必修绩点', '是否降级', '毕业选择', '是否读博', '提交时间'])
+
+        for student in students:
+            summary_writer.writerow([
+                student['id'], student['name'], student['sex'], student['student_id'],
+                student['phone'], student['college'], student['major'],
+                student['cet4'], student['gpa'], student['downgrade'],
+                student['choice'], student['phd'], student['created_at']
+            ])
+
+        # 将总汇总表写入 ZIP
+        # 需要将 unicode string 编码为 bytes，并加上 UTF-8 BOM 以防 Excel 乱码
+        summary_bytes = '\ufeff' + summary_output.getvalue()
+        zf.writestr('总汇总表.csv', summary_bytes.encode('utf-8'))
+
+        # 2. 为每个学生创建文件夹和文件
+        upload_folder = os.getenv('UPLOAD_FOLDER', 'uploads')
+        file_type_names = {
+            'transcript': '可信电子成绩单',
+            'cet4_certificate': '四级考试成绩单',
+            'other': '其他证明材料'
+        }
+
+        # 记录已处理的学号，以防重复（由于允许多次提交，我们以学号为准打包附件）
+        processed_student_ids = set()
+
+        for student in students:
+            student_id = student['student_id']
+            name = student['name']
+            folder_name = f"{student_id}_{name}"
+
+            # 写入该条记录的个人信息表
+            # 文件名带上记录 ID，防止同一个人多次提交互相覆盖
+            record_id = student['id']
+            personal_output = io.StringIO()
+            personal_writer = csv.writer(personal_output)
+            personal_writer.writerow(['字段', '内容'])
+            personal_writer.writerow(['记录ID', record_id])
+            personal_writer.writerow(['提交时间', student['created_at']])
+            personal_writer.writerow(['姓名', name])
+            personal_writer.writerow(['性别', student['sex']])
+            personal_writer.writerow(['学号', student_id])
+            personal_writer.writerow(['电话', student['phone']])
+            personal_writer.writerow(['原学院', student['college']])
+            personal_writer.writerow(['原专业', student['major']])
+            personal_writer.writerow(['四级成绩', student['cet4']])
+            personal_writer.writerow(['必修绩点', student['gpa']])
+            personal_writer.writerow(['是否降级', student['downgrade']])
+            personal_writer.writerow(['毕业选择', student['choice']])
+            personal_writer.writerow(['是否读博', student['phd']])
+
+            # 如果有课程调查，也写入
+            cursor.execute('SELECT * FROM course_survey WHERE record_id = ?', (record_id,))
+            survey = cursor.fetchone()
+            if survey:
+                selected_courses = json.loads(survey['selected_courses'])
+                course_names = [COURSE_NAMES.get(cid, str(cid)) for cid in selected_courses]
+                percentage = calc_percentage(survey['selected_courses'])
+                personal_writer.writerow(['课程完成度', f"{percentage}%"])
+                personal_writer.writerow(['已选课程', '、'.join(course_names)])
+
+            personal_bytes = '\ufeff' + personal_output.getvalue()
+            zf.writestr(f"{folder_name}/{name}_记录{record_id}_信息表.csv", personal_bytes.encode('utf-8'))
+
+            # 处理该学号的附件（只处理一次，因为附件是按学号关联的）
+            if student_id not in processed_student_ids:
+                processed_student_ids.add(student_id)
+                cursor.execute('SELECT * FROM attachments WHERE student_id = ?', (student_id,))
+                attachments = cursor.fetchall()
+
+                for att in attachments:
+                    file_path = os.path.join(upload_folder, att['file_path'])
+                    if os.path.exists(file_path):
+                        # 重命名附件为可读的名称
+                        type_name = file_type_names.get(att['file_type'], att['file_type'])
+                        # 避免重名，加上附件 ID
+                        safe_filename = f"{type_name}_{att['id']}_{att['file_name']}"
+                        zip_path = f"{folder_name}/{safe_filename}"
+                        zf.write(file_path, zip_path)
+
+    conn.close()
+
+    # 准备响应
+    memory_file.seek(0)
+    return memory_file.getvalue(), 200, {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': 'attachment; filename=export_all.zip'
+    }
+
 @admin_bp.route('/export', methods=['GET'])
 @admin_required
 def export_students():
