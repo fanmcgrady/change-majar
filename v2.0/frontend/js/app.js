@@ -32,6 +32,16 @@ const courses = [
 let selectedCourses = [];
 let isSubmitted = false;
 
+// 显示调试信息
+function showDebugInfo(info) {
+    const debugDiv = document.getElementById('debugInfo');
+    const debugContent = document.getElementById('debugContent');
+    if (debugDiv && debugContent) {
+        debugDiv.style.display = 'block';
+        debugContent.innerHTML = info;
+    }
+}
+
 // 显示提示
 function showToast(msg, duration = 2000) {
     const toast = document.getElementById('toast');
@@ -107,7 +117,14 @@ function initWechat() {
             })
             .catch(err => {
                 hideLoading();
-                showToast('登录失败: ' + err.message);
+                // 显示错误信息和当前URL
+                const debugInfo = `
+                    <p><strong>错误：</strong>${err.message}</p>
+                    <p><strong>当前URL：</strong><br>${window.location.href}</p>
+                    <p><strong>Code参数：</strong>${code}</p>
+                `;
+                showDebugInfo(debugInfo);
+                showToast('登录失败，请查看页面顶部调试信息');
             });
     } else if (getToken()) {
         // 已有token，直接加载数据
@@ -117,7 +134,25 @@ function initWechat() {
         const appid = 'wxa4be31314a5d84be'; // 微信appid
         const redirect_uri = encodeURIComponent(window.location.href);
         const authUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect`;
-        window.location.href = authUrl;
+
+        // 显示调试信息
+        const debugInfo = `
+            <p><strong>准备跳转微信授权</strong></p>
+            <p><strong>当前URL：</strong><br>${window.location.href}</p>
+            <p><strong>redirect_uri：</strong><br>${redirect_uri}</p>
+            <p><strong>授权URL：</strong><br>${authUrl}</p>
+        `;
+        showDebugInfo(debugInfo);
+
+        console.log('准备跳转微信授权');
+        console.log('当前URL:', window.location.href);
+        console.log('redirect_uri:', redirect_uri);
+        console.log('授权URL:', authUrl);
+
+        // 延迟3秒跳转，让用户看到调试信息
+        setTimeout(() => {
+            window.location.href = authUrl;
+        }, 3000);
     }
 }
 
