@@ -89,6 +89,7 @@ server {
     listen 80;
     server_name yourdomain.com;
 
+    # 重要：设置上传文件大小限制为 16MB
     client_max_body_size 16M;
 
     location / {
@@ -96,6 +97,11 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        # 上传超时设置
+        proxy_read_timeout 300;
+        proxy_connect_timeout 300;
+        proxy_send_timeout 300;
     }
 }
 ```
@@ -141,8 +147,11 @@ sqlite3 database.db "UPDATE admins SET password='new_password' WHERE username='a
 - 查看后端日志
 
 ### 2. 文件上传失败
-- 检查 uploads 目录权限
-- 检查 Nginx client_max_body_size 配置
+- 检查 uploads 目录是否存在且有写权限：`chmod 755 uploads`
+- 检查 Nginx client_max_body_size 配置（需要设置为 16M 或更大）
+- 检查 Nginx 错误日志：`tail -f /var/log/nginx/error.log`
+- 如果提示"服务器返回了非JSON响应"，通常是 Nginx 配置问题或后端异常
+- 确保 Nginx 配置中包含上传超时设置（proxy_read_timeout 等）
 
 ### 3. 数据库错误
 - 检查 database.db 文件权限

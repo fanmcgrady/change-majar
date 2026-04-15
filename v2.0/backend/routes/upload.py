@@ -14,47 +14,55 @@ def allowed_file(filename):
 @upload_bp.route('/file', methods=['POST'])
 def upload_file():
     """上传文件"""
-    student_id = request.form.get('student_id')
-    if not student_id:
-        return jsonify({'error': '缺少学号'}), 400
+    try:
+        student_id = request.form.get('student_id')
+        if not student_id:
+            return jsonify({'error': '缺少学号'}), 400
 
-    if 'file' not in request.files:
-        return jsonify({'error': '没有文件'}), 400
+        if 'file' not in request.files:
+            return jsonify({'error': '没有文件'}), 400
 
-    file = request.files['file']
-    file_type = request.form.get('file_type', 'other')
+        file = request.files['file']
+        file_type = request.form.get('file_type', 'other')
 
-    if file.filename == '':
-        return jsonify({'error': '文件名为空'}), 400
+        if file.filename == '':
+            return jsonify({'error': '文件名为空'}), 400
 
-    if not allowed_file(file.filename):
-        return jsonify({'error': '只支持PDF格式'}), 400
+        if not allowed_file(file.filename):
+            return jsonify({'error': '只支持PDF格式'}), 400
 
-    filename = secure_filename(file.filename)
-    timestamp = int(datetime.now().timestamp())
-    new_filename = f"{student_id}_{timestamp}_{filename}"
+        filename = secure_filename(file.filename)
+        timestamp = int(datetime.now().timestamp())
+        new_filename = f"{student_id}_{timestamp}_{filename}"
 
-    upload_folder = os.getenv('UPLOAD_FOLDER', 'uploads')
-    filepath = os.path.join(upload_folder, new_filename)
+        upload_folder = os.getenv('UPLOAD_FOLDER', 'uploads')
 
-    file.save(filepath)
-    file_size = os.path.getsize(filepath)
+        # 确保上传目录存在
+        if not os.path.exists(upload_folder):
+            os.makedirs(upload_folder, exist_ok=True)
 
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO attachments (student_id, file_type, file_name, file_path, file_size)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (student_id, file_type, filename, new_filename, file_size))
-    conn.commit()
-    file_id = cursor.lastrowid
-    conn.close()
+        filepath = os.path.join(upload_folder, new_filename)
 
-    return jsonify({
-        'message': '上传成功',
-        'file_id': file_id,
-        'file_path': f'/uploads/{new_filename}'
-    })
+        file.save(filepath)
+        file_size = os.path.getsize(filepath)
+
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO attachments (student_id, file_type, file_name, file_path, file_size)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (student_id, file_type, filename, new_filename, file_size))
+        conn.commit()
+        file_id = cursor.lastrowid
+        conn.close()
+
+        return jsonify({
+            'message': '上传成功',
+            'file_id': file_id,
+            'file_path': f'/uploads/{new_filename}'
+        })
+    except Exception as e:
+        return jsonify({'error': f'上传失败: {str(e)}'}), 500
 
 @upload_bp.route('/files', methods=['GET'])
 def get_files():
