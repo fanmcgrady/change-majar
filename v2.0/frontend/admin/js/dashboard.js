@@ -169,22 +169,13 @@ async function showStudentDetail(openid) {
                 };
                 const typeName = typeNames[att.file_type] || att.file_type;
                 const fileUrl = `${pathPrefix}/uploads/${att.file_path}`;
-                // 判断文件类型：优先用 file_name，如果 file_name 是 'pdf' 这种没有后缀的，则用 file_name 本身
-                const fileExt = att.file_name.includes('.') ? att.file_name.split('.').pop().toLowerCase() : att.file_name.toLowerCase();
 
                 attachmentHtml += `<div class="attachment-preview">`;
                 attachmentHtml += `<h4>${typeName} <a href="${fileUrl}" target="_blank" download="${att.file_name}.pdf" style="font-size: 12px; color: #1aad19;">[下载]</a></h4>`;
 
-                // 对于成绩单和四级证书，默认尝试用PDF预览（因为通常都是PDF）
-                if (fileExt === 'pdf' || att.file_type === 'transcript' || att.file_type === 'cet4_certificate') {
-                    attachmentHtml += `<iframe src="${fileUrl}" class="pdf-preview" frameborder="0" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe>`;
-                    attachmentHtml += `<p style="color: #999; display: none;">PDF预览失败，请点击下载查看</p>`;
-                } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(fileExt)) {
-                    attachmentHtml += `<img src="${fileUrl}" class="image-preview" alt="${att.file_name}" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">`;
-                    attachmentHtml += `<p style="color: #999; display: none;">图片预览失败，请点击下载查看</p>`;
-                } else {
-                    attachmentHtml += `<p style="color: #999;">不支持预览此文件类型，请下载查看</p>`;
-                }
+                // 所有附件都尝试用PDF预览
+                attachmentHtml += `<iframe src="${fileUrl}" class="pdf-preview" frameborder="0" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"></iframe>`;
+                attachmentHtml += `<p style="color: #999; display: none;">预览失败，请点击下载查看</p>`;
 
                 attachmentHtml += `</div>`;
             });
